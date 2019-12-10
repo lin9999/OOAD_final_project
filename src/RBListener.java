@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-public class RBButton extends MouseAdapter {
+public class RBListener extends MouseAdapter {
 		public void mouseEntered(MouseEvent e) {
 			JLabel l = (JLabel) e.getSource();
 			l.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
