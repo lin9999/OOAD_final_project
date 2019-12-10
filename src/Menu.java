@@ -3,10 +3,7 @@ import java.awt.event.*;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -32,7 +29,7 @@ import javax.swing.table.TableColumnModel;
 public class Menu extends JPanel {
 	private JLayeredPane layeredPane;
 	private JLabel background = new JLabel();
-	final int frameWidth = 1152, frameHeight = 720;
+	final static int frameWidth = 1152, frameHeight = 720;
 
 	// attribute of title
 	private JPanel title = new JPanel();
@@ -2533,36 +2530,7 @@ public class Menu extends JPanel {
  * 
  *
  */
-class RoundedCornerBorder extends AbstractBorder {
-	private static final Color ALPHA_ZERO = new Color(0x0, true);
 
-	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		Shape border = getBorderShape(x, y, width - 1, height - 1);
-		g2.setPaint(ALPHA_ZERO);
-		Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
-		corner.subtract(new Area(border));
-		g2.fill(corner);
-		g2.setPaint(Color.GRAY);
-		g2.draw(border);
-		g2.dispose();
-	}
-
-	public Shape getBorderShape(int x, int y, int w, int h) {
-		int r = h; // h / 2;
-		return new RoundRectangle2D.Double(x, y, w, h, r, r);
-	}
-
-	public Insets getBorderInsets(Component c) {
-		return new Insets(4, 8, 4, 8);
-	}
-
-	public Insets getBorderInsets(Component c, Insets insets) {
-		insets.set(4, 8, 4, 8);
-		return insets;
-	}
-}
 
 /**
  * setting up the color icon 
