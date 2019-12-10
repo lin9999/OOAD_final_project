@@ -5,3 +5,6 @@
 3. use Heritage
     * 選擇的自黑變紅紅變黑寫成class heritage
 4. try n catch
+
+### OOAD_Hotel@gmail.com
+### password: FinalProjectSampleCode
