@@ -52,8 +52,8 @@ public class RegistrationUI extends JPanel {
 		subMenu.setOpaque(false);
 		subMenu.setBackground(null);
 		subMenu.add(blank);
-		subMenu.add(blank);
 		subMenu.add(buttonPanelet);
+		subMenu.add(blank);
 		subMenu.add(blank);
 	}
 	
@@ -201,9 +201,12 @@ public class RegistrationUI extends JPanel {
 	}
 
 	private void initSignUp() { 
-		JLabel signInLogin = new JLabel("LOGIN", JLabel.CENTER);
-		JLabel signInBack = new JLabel("BACK", JLabel.CENTER);
-		
+		JLabel loginText = new JLabel("SIGN UP and LOGIN", JLabel.CENTER);
+		JLabel cancelText = new JLabel("CANCEL", JLabel.CENTER);
+		JTextField inputID = new JTextField(10);
+		JPasswordField inputPassword = new JPasswordField(10);
+		JTextField inputCode = new JTextField(5);
+		JLabel verifyCode = new JLabel("");
 	}
 	
 	public RegistrationUI() {
