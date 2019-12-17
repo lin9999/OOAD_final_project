@@ -26,6 +26,9 @@ public class RegistrationUI extends JPanel {
 		Menu.background.setIcon(new ImageIcon("images/Menu/background.png"));
 		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
 		layeredPane.add(Menu.background, new Integer(0));
+		
+		signIn.setBounds(subMenuCenter.width - (subMenuWidth / 2), subMenuCenter.height - (subMenuHeight / 2), 
+				subMenuWidth, subMenuHeight);
 		layeredPane.add(subMenu, new Integer(2));
 		add(layeredPane);
 	}
@@ -42,7 +45,7 @@ public class RegistrationUI extends JPanel {
 		signInText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						layeredPane.remove(subMenu);
-						layeredPane.add(signIn);
+						layeredPane.add(signIn, new Integer(2));
 						validate();
 						repaint();
 						signInText.setForeground(Color.BLACK);
@@ -52,7 +55,7 @@ public class RegistrationUI extends JPanel {
 		signUpText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						layeredPane.remove(subMenu);
-						layeredPane.add(signUp);
+						layeredPane.add(signUp, new Integer(2));
 						validate();
 						repaint();
 						signUpText.setForeground(Color.BLACK);
@@ -71,9 +74,9 @@ public class RegistrationUI extends JPanel {
 		subMenu.setOpaque(false);
 		subMenu.setBackground(null);
 		subMenu.add(blank);
+		subMenu.add(blank);
+		subMenu.add(blank);
 		subMenu.add(buttonPanelet);
-		subMenu.add(blank);
-		subMenu.add(blank);
 	}
 	
 	private void initSignIn() { 
