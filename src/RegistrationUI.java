@@ -7,15 +7,33 @@ import javax.swing.text.DocumentFilter;
 
 
 public class RegistrationUI extends JPanel {
-	final private int WIDTH = 600, HEIGHT = 270;
-	final private Dimension CENTER = new Dimension(Menu.frameWidth / 2, 450);
+	final private int subMenuWidth = 600, subMenuHeight = 270;
+	final private Dimension subMenuCenter = new Dimension(Menu.frameWidth / 2, 450);
 	private JLayeredPane layeredPane = new JLayeredPane();
 	
 	private JPanel subMenu = new JPanel();
 	private JPanel signIn = new JPanel();
 	private JPanel signUp = new JPanel();
 	
+	private void initPanel() {
+		setLayout(new GridLayout(1, 1));
+		setOpaque(false);
+		setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+	}
+	
+	private void initLayerPane() {
+		layeredPane.setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+		Menu.background.setIcon(new ImageIcon("images/Menu/background.png"));
+		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
+		layeredPane.add(Menu.background, new Integer(0));
+		layeredPane.add(subMenu, new Integer(2));
+		add(layeredPane);
+	}
+	
 	private void initSubMenu() {
+		this.subMenu.setBounds(subMenuCenter.width - (subMenuWidth / 2), subMenuCenter.height - (subMenuHeight / 2),
+				subMenuWidth, subMenuHeight);
+		
 		JPanel buttonPanelet = new JPanel();
 		JLabel signInText = new JLabel("SIGN IN", JLabel.CENTER);
 		JLabel signUpText = new JLabel("SIGN UP", JLabel.CENTER);
@@ -42,11 +60,12 @@ public class RegistrationUI extends JPanel {
 				}
 			);
 		buttonPanelet.setLayout(new GridLayout(1, 2, 0, 0));
+		buttonPanelet.setOpaque(false);
 		buttonPanelet.add(signInText);
 		buttonPanelet.add(signUpText);
 		
 		JPanel blank = new JPanel();
-		blank.setOpaque(true);
+		blank.setOpaque(false);
 		
 		subMenu.setLayout(new GridLayout(4, 1, 0, 0));
 		subMenu.setOpaque(false);
@@ -170,8 +189,8 @@ public class RegistrationUI extends JPanel {
 		loginText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						// TODO handle login
-//						layeredPane.remove(subMenu);
-//						layeredPane.add(signUp);
+						layeredPane.remove(subMenu);
+						layeredPane.add(signUp);
 						validate();
 						repaint();
 						loginText.setForeground(Color.BLACK);
@@ -210,5 +229,7 @@ public class RegistrationUI extends JPanel {
 		initSubMenu();
 		initSignIn();
 		initSignUp();
+		initLayerPane();
+		initPanel();
 	}
 }
