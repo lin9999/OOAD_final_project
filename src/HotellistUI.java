@@ -33,6 +33,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 public class HotellistUI extends JPanel{
+	
 	private String cid, cod;
 	private int people, rooms;
 	private ArrayList<AvailableHotelRoom> AHR;
