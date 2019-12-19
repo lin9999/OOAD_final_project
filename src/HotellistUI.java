@@ -37,6 +37,7 @@ public class HotellistUI extends JPanel{
 	private String cid, cod;
 	private int people, rooms;
 	private ArrayList<AvailableHotelRoom> AHR;
+	static Object hid, sroom, droom, qroom;
 	
 	final private int hotellistWidth = 820, hotellistHeight = 500;
 	final private Dimension hotellistCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
@@ -87,15 +88,15 @@ public class HotellistUI extends JPanel{
 			}
 		);
 		reservehotellist.addMouseListener( new RBListener() {
-			public void mouseClicked(MouseEvent e) {
-//				HotellistUI.this.setVisible(false);
-//				JFrame root = (JFrame) SwingUtilities.getRoot(HotellistUI.this);
-				// TODO 
-//				root.setContentPane(new ReserveUI(cid, cod, people, rooms));
-				reservehotellist.setForeground(Color.BLACK);
+				public void mouseClicked(MouseEvent e) {
+					HotellistUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotellistUI.this);
+	//				 TODO 
+					root.setContentPane(new ReserveUI(cid, cod, people, rooms, hid, sroom ,droom, qroom));
+					reservehotellist.setForeground(Color.BLACK);
+				}
 			}
-		}
-	);
+		);
 	}
 	
 	private void arrangeHotellist() {
@@ -103,19 +104,7 @@ public class HotellistUI extends JPanel{
 		ArrayList<AvailableHotelRoom> star4AHR = SearchByStar(AHR, 4);
 		ArrayList<AvailableHotelRoom> star3AHR = SearchByStar(AHR, 3);
 		ArrayList<AvailableHotelRoom> star2AHR = SearchByStar(AHR, 2);
-//		showallText.addMouseListener( new RBListener() {
-//				public void mouseClicked(MouseEvent e) {
-////					layeredPane.remove(search_option);
-//					layeredPane.remove(Hotellist);
-//					DefaultTableModel dtm = makeHotellist(AHR);
-//					showHotellist(dtm);
-//					layeredPane.add(Hotellist, new Integer(3));
-//					validate();
-//					repaint();
-//					showallText.setForeground(Color.black);
-//				}
-//			}
-//		);
+
 		pricehighText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 //					layeredPane.remove(search_option);
@@ -202,7 +191,7 @@ public class HotellistUI extends JPanel{
 		String[] heading = new String[] { "ID", "Star", "City", "Address", "Single", "Double", "Quad", "Price", "" };
 		DefaultTableModel tablemodel = new DefaultTableModel(heading, 0);
 		// get data
-		for (int i = 0 ; i < _AHR.size()-1; i++) {
+		for (int i = 0 ; i < _AHR.size(); i++) {
 			int id = _AHR.get(i).getHotelID(); // id
 			int star = _AHR.get(i).getHotelStar(); // star
 			String locality = _AHR.get(i).getLocality(); // locality
@@ -383,13 +372,13 @@ class ButtonColumns extends AbstractCellEditor implements TableCellRenderer, Tab
 
 	public void actionPerformed(ActionEvent e) {
 		fireEditingStopped();
-		Object hid = table.getModel().getValueAt(table.getSelectedRow(), 0);
-		Object sroom = table.getModel().getValueAt(table.getSelectedRow(), 4);
-		Object droom = table.getModel().getValueAt(table.getSelectedRow(), 5);
-		Object qroom = table.getModel().getValueAt(table.getSelectedRow(), 6);
-		Menu.reservehotelid.setSelectedIndex((int) hid);
-		Menu.reservesingleroomField.setText(sroom.toString());
-		Menu.reservedoubleroomField.setText(droom.toString());
-		Menu.reservequadroomField.setText(qroom.toString());
+		HotellistUI.hid = table.getModel().getValueAt(table.getSelectedRow(), 0);
+		HotellistUI.sroom = table.getModel().getValueAt(table.getSelectedRow(), 4);
+		HotellistUI.droom = table.getModel().getValueAt(table.getSelectedRow(), 5);
+		HotellistUI.qroom = table.getModel().getValueAt(table.getSelectedRow(), 6);
+//		Menu.reservehotelid.setSelectedIndex((int) hid);
+//		Menu.reservesingleroomField.setText(sroom.toString());
+//		Menu.reservedoubleroomField.setText(droom.toString());
+//		Menu.reservequadroomField.setText(qroom.toString());
 	}
 }

@@ -53,6 +53,16 @@ public class HotelfunctionUI extends JPanel{
 		// go to ReserveUI
 		JLabel reserveText = new JLabel("RESERVE", JLabel.CENTER);
 		reserveText.setFont(new Font("Dialog", Font.BOLD, 36));
+		reserveText.addMouseListener( new RBListener() {
+			public void mouseClicked(MouseEvent e) {
+				HotelfunctionUI.this.setVisible(false);
+				JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+//				 TODO 
+				root.setContentPane(new ReserveUI());
+				reserveText.setForeground(Color.BLACK);
+			}
+		}
+	);
 		
 		// go to InquiryUI
 		JLabel inquiryText = new JLabel("INQUIRY", JLabel.CENTER);
