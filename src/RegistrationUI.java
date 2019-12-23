@@ -7,6 +7,7 @@ import javax.swing.text.DocumentFilter;
 
 
 public class RegistrationUI extends JPanel {
+	private static final long serialVersionUID = 1L;
 	final private int subMenuWidth = 600, subMenuHeight = 270;
 	final private Dimension subMenuCenter = new Dimension(Menu.frameWidth / 2, 450);
 	private JLayeredPane layeredPane = new JLayeredPane();
@@ -85,6 +86,7 @@ public class RegistrationUI extends JPanel {
 		JLabel ID = new JLabel("       ID       : ");
 		ID.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		JTextField inputID = new JTextField(10) {
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
@@ -120,6 +122,7 @@ public class RegistrationUI extends JPanel {
 		JLabel password = new JLabel("PASSWORD : ");
 		password.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		JPasswordField inputPassword = new JPasswordField(10) {
+			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -144,6 +147,7 @@ public class RegistrationUI extends JPanel {
 		AbstractDocument doc = (AbstractDocument) inputPassword.getDocument();
 		doc.setDocumentFilter(new DocumentFilter());
 		AbstractButton b = new JToggleButton(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e) {
 				AbstractButton c = (AbstractButton) e.getSource();
 				Character ec = c.isSelected() ? 0 : (Character) UIManager.get("PasswordField.echoChar");
@@ -162,6 +166,7 @@ public class RegistrationUI extends JPanel {
 		b.setSelectedIcon(new ColorIcon(Color.RED));
 		b.setRolloverSelectedIcon(new ColorIcon(Color.GRAY));
 		JPanel panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}
@@ -188,11 +193,18 @@ public class RegistrationUI extends JPanel {
 		
 		loginText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
-						// TODO handle login
-						layeredPane.remove(subMenu);
-						layeredPane.add(signUp);
-						validate();
-						repaint();
+						int ret = main.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
+						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
+						if (ret == 1) {
+							main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
+							RegistrationUI.this.setVisible(false);
+							root.setContentPane(new HotelfunctionUI());
+						} else if (ret == 0) {
+							JOptionPane.showMessageDialog(root, "UNKNOWN ID", "Warning", JOptionPane.ERROR_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(root, "WRONG PASSWORD", "Warning", JOptionPane.ERROR_MESSAGE);							
+						}
+
 						loginText.setForeground(Color.BLACK);
 					}
 				}
@@ -220,7 +232,6 @@ public class RegistrationUI extends JPanel {
 		signIn.add(passwordPanel);
 		signIn.add(buttonPanel);
 	}
-
 	
 	private void initsignUp() { 
 		JLabel loginText = new JLabel("SIGN UP and LOGIN", JLabel.CENTER);
@@ -239,6 +250,7 @@ public class RegistrationUI extends JPanel {
 		JLabel ID = new JLabel("       ID       : ");
 		ID.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		JTextField inputID = new JTextField(10) {
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
@@ -274,6 +286,7 @@ public class RegistrationUI extends JPanel {
 		JLabel password = new JLabel("PASSWORD : ");
 		password.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		JPasswordField inputPassword = new JPasswordField(10) {
+			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
 					Graphics2D g2 = (Graphics2D) g.create();
@@ -298,6 +311,7 @@ public class RegistrationUI extends JPanel {
 		AbstractDocument doc = (AbstractDocument) inputPassword.getDocument();
 		doc.setDocumentFilter(new DocumentFilter());
 		AbstractButton b = new JToggleButton(new AbstractAction() {
+			private static final long serialVersionUID = 1L;
 			public void actionPerformed(ActionEvent e) {
 				AbstractButton c = (AbstractButton) e.getSource();
 				Character ec = c.isSelected() ? 0 : (Character) UIManager.get("PasswordField.echoChar");
@@ -315,6 +329,7 @@ public class RegistrationUI extends JPanel {
 		b.setSelectedIcon(new ColorIcon(Color.RED));
 		b.setRolloverSelectedIcon(new ColorIcon(Color.GRAY));
 		JPanel panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
 			public boolean isOptimizedDrawingEnabled() {
 				return false;
 			}
@@ -333,8 +348,8 @@ public class RegistrationUI extends JPanel {
 		verifycodePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		verifycodePanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		// enter verify code
-		JLabel verifycode = new JLabel("VERIFY CODE      : ");
-		verifycode.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		JLabel verifyCodeMessage = new JLabel("VERIFY CODE      : ");
+		verifyCodeMessage.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		inputCode.setEditable(true);
 		inputCode.setFont(new Font("Times New Roman", Font.BOLD, 23));
 		inputCode.addKeyListener(new KeyAdapter() {// can only enter number!
@@ -346,8 +361,9 @@ public class RegistrationUI extends JPanel {
 		});
 		inputCode.setBackground(new Color(232, 232, 232, 120));
 		verifyCode.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		verifyCode.setText(main.getRandomString(6));
 		// verify code panel adding
-		verifycodePanel.add(verifycode);
+		verifycodePanel.add(verifyCodeMessage);
 		verifycodePanel.add(inputCode);
 		verifycodePanel.add(verifyCode);
 
@@ -359,45 +375,24 @@ public class RegistrationUI extends JPanel {
 		loginText.setFont(new Font("Arial Black", Font.PLAIN, 18));
 		cancelText.setFont(new Font("Arial Black", Font.PLAIN, 18));
 		
-		loginText.addMouseListener(new RBListener() {
+		loginText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
-						String UserID = inputID.getText();
-						String Password = new String(inputPassword.getPassword());
-						String UserCode = inputCode.getText(); // user enter verify code
-						String VerifyCode = verifyCode.getText(); // random verify code
-						if (main.SignUpCheck(UserID)) { // TODO change main. to Registration.
-							if (UserCode.equals(VerifyCode)) {
-								// Create a new User
-								main.user = new User(UserID, Password);
+						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
+						if (main.SignUpCheck(inputID.getText())) {
+							if (inputCode.getText().equals(verifyCode.getText())) {
+								main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 								databaseUtil.insertUser(main.user);
-			
-								layeredPane.remove(signUp);
-								layeredPane.remove(title);
-								background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
-								layeredPane.add(Hotelfunction, new Integer(3));
-								validate();
-								repaint();
-								signuplogin.setForeground(Color.black);
-							} else {// Wrong verify code.
-								layeredPane.remove(Signup);
-								layeredPane.add(Signuperror1, new Integer(3));
-								signinidField.setText("");
-								signinpasswordField.setText("");
-								verifycodeField.setText(main.getRandomString(6));
-								validate();
-								repaint();
-								signuplogin.setForeground(Color.black);
+								RegistrationUI.this.setVisible(false);
+								root.setContentPane(new HotelfunctionUI());								
+							} else {
+								JOptionPane.showMessageDialog(root, "WRONG VERIFY CODE", "Warning", JOptionPane.ERROR_MESSAGE);
+								verifyCode.setText(main.getRandomString(6));
 							}
-						} else {// UserID already existed.
-							layeredPane.remove(Signup);
-							layeredPane.add(Signuperror, new Integer(3));
-							signupidField.setText("");
-							signuppasswordField.setText("");
-							verifycodeField.setText(main.getRandomString(6));
-							validate();
-							repaint();
-							signuplogin.setForeground(Color.black);
+						} else {
+							JOptionPane.showMessageDialog(root, "USER ID ALREADY EXISTS", "Warning", JOptionPane.ERROR_MESSAGE);							
+							verifyCode.setText(main.getRandomString(6));
 						}
+						loginText.setForeground(Color.BLACK);
 					}
 				}
 			);
