@@ -23,7 +23,7 @@ public class InquiryUI extends JPanel {
 	final private int InquiryWidth = 600, InquiryHeight = 150;
 	final private Dimension InquiryCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private JPanel Inquiry = new JPanel();
+	private JPanel inquiry = new JPanel();
 	protected TextField reservenumberField = new TextField(15);
 	
 	private void initPanel() {
@@ -37,17 +37,17 @@ public class InquiryUI extends JPanel {
 		Menu.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
 		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
 		layeredPane.add(Menu.background, new Integer(0));
-		layeredPane.add(Inquiry, new Integer(1));
+		layeredPane.add(inquiry, new Integer(1));
 		add(layeredPane);
 	}
 	
 	private void initInquiry() {
-		Inquiry.setBounds(InquiryCenter.width - (InquiryWidth / 2), InquiryCenter.height - (InquiryHeight / 2),
+		inquiry.setBounds(InquiryCenter.width - (InquiryWidth / 2), InquiryCenter.height - (InquiryHeight / 2),
 				InquiryWidth, InquiryHeight);
 		
-		Inquiry.setLayout(new GridLayout(2, 1, 0, 0));
-		Inquiry.setOpaque(false);
-		Inquiry.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
+		inquiry.setLayout(new GridLayout(2, 1, 0, 0));
+		inquiry.setOpaque(false);
+		inquiry.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
 
 		// enter reserve number
 		JPanel reservenumberPanel = new JPanel();
@@ -89,7 +89,7 @@ public class InquiryUI extends JPanel {
 		nextText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 					int OrderID = Integer.parseInt(reservenumberField.getText());
-					Order order = main.CheckOrder(OrderID);
+					Order order = Inquiry.CheckOrder(OrderID);
 					if (order != null) {
 						InquiryUI.this.setVisible(false);
 						JFrame root = (JFrame) SwingUtilities.getRoot(InquiryUI.this);
@@ -107,8 +107,8 @@ public class InquiryUI extends JPanel {
 		buttons.add(backText);
 		buttons.add(nextText);
 		// inquiry adding
-		Inquiry.add(reservenumberPanel);
-		Inquiry.add(buttons);
+		inquiry.add(reservenumberPanel);
+		inquiry.add(buttons);
 	}
 	
 	public InquiryUI() {

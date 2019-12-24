@@ -23,7 +23,7 @@ import javax.swing.border.MatteBorder;
 public class ModifyUI extends JPanel{
 	final private int revisedateWidth = 820, revisedateHeight = 500;
 	final private Dimension revisedateCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
-	private JPanel Modify = new JPanel();
+	private JPanel modify = new JPanel();
 	private JLayeredPane layeredPane = new JLayeredPane();
 	Order order;
 	
@@ -38,7 +38,7 @@ public class ModifyUI extends JPanel{
 		Menu.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
 		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
 		layeredPane.add(Menu.background, new Integer(0));
-		layeredPane.add(Modify, new Integer(1));
+		layeredPane.add(modify, new Integer(1));
 		add(layeredPane);
 	}
 	
@@ -80,15 +80,15 @@ public class ModifyUI extends JPanel{
 					int nqn = Integer.parseInt(newquadroomField.getText());
 					if (main.CountDaysBetween(nCID, nCOD) > 0) {
 						int OrderID = order.getID();
-						if (main.CheckDateforReviseDate(OrderID, nCID, nCOD)) { // check the date first
-							Order newOrder = main.ModifyDate(OrderID, nCID, nCOD);
+						if (Inquiry.CheckDateforReviseDate(OrderID, nCID, nCOD)) { // check the date first
+							Order newOrder = Inquiry.ModifyDate(OrderID, nCID, nCOD);
 							System.out.println(newOrder.getCheckInDate() + ", " + newOrder.getCheckOutDate());
 							if (nsn > osn || ndn > odn || nqn > oqn) {
 //								 change room error 修改房間數失敗 不可增加房間
 								JFrame root = (JFrame) SwingUtilities.getRoot(ModifyUI.this);
 								JOptionPane.showMessageDialog(root, "ADDING ROOMS IS NOT ALLOWED", "Warning", JOptionPane.ERROR_MESSAGE);
 							} else {
-								newOrder = main.ChangeRooms(newOrder.getID(), nsn, ndn, nqn);
+								newOrder = Inquiry.ChangeRooms(newOrder.getID(), nsn, ndn, nqn);
 								System.out.println(newOrder.getDnum().size());
 								// if revise success 修改成功
 								ModifyUI.this.setVisible(false);
@@ -131,11 +131,11 @@ public class ModifyUI extends JPanel{
 		newquadroomField.setText(z.toString());
 
 		//-------FOR---GUI---SETTING----------------------------------
-		Modify.setBounds(revisedateCenter.width - (revisedateWidth / 2),
+		modify.setBounds(revisedateCenter.width - (revisedateWidth / 2),
 				revisedateCenter.height - (revisedateHeight / 2), revisedateWidth, revisedateHeight);
-		Modify.setLayout(new GridLayout(6, 1, 0, 0));
-		Modify.setOpaque(false);
-		Modify.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
+		modify.setLayout(new GridLayout(6, 1, 0, 0));
+		modify.setOpaque(false);
+		modify.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
 		// original date
 		JPanel panel1 = new JPanel();
 		panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -290,12 +290,12 @@ public class ModifyUI extends JPanel{
 //		buttons.add(backchangeroom);
 		buttons.add(nextText);
 		// adding panel
-		Modify.add(panel1);
-		Modify.add(panel2);
-		Modify.add(panel1_);
-		Modify.add(panel2_);
-		Modify.add(panel3);
-		Modify.add(buttons);
+		modify.add(panel1);
+		modify.add(panel2);
+		modify.add(panel1_);
+		modify.add(panel2_);
+		modify.add(panel3);
+		modify.add(buttons);
 	}
 
 	public ModifyUI(Order _order) {
