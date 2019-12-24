@@ -11,11 +11,14 @@ import javax.swing.border.MatteBorder;
 
 public class HotelPreference extends JFrame {
 	final public int frameWidth = 1152, frameHeight = 720;
-
+	public static JLabel background = new JLabel();
+	
 	// Program constructor
 	public HotelPreference() {
 		initFrame();
-		this.setContentPane(new Menu());
+		background.setIcon(new ImageIcon("images/Menu/background.png"));
+		background.setBounds(0, 0, frameWidth, frameHeight);
+		this.setContentPane(new RegistrationUI());
         this.setVisible(true);
 	}
 

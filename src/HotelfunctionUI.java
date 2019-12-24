@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
-public class HotelfunctionUI extends JPanel{
+public class HotelfunctionUI extends JPanel {
 	final private int hotelfunctionWidth = 500, hotelfunctionHeight = 200;
 	final private Dimension hotelfunctionCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
@@ -41,28 +41,28 @@ public class HotelfunctionUI extends JPanel{
 		JLabel searchText = new JLabel("SEARCH", JLabel.CENTER);
 		searchText.setFont(new Font("Dialog", Font.BOLD, 36));
 		searchText.addMouseListener( new RBListener() {
-				public void mouseClicked(MouseEvent e) {
-					HotelfunctionUI.this.setVisible(false);
-					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-					root.setContentPane(new SearchUI());
-					searchText.setForeground(Color.BLACK);
+					public void mouseClicked(MouseEvent e) {
+						HotelfunctionUI.this.setVisible(false);
+						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+						root.setContentPane(new SearchUI());
+						searchText.setForeground(Color.BLACK);
+					}
 				}
-			}
-		);
+			);
 		
 		// go to ReserveUI
 		JLabel reserveText = new JLabel("RESERVE", JLabel.CENTER);
 		reserveText.setFont(new Font("Dialog", Font.BOLD, 36));
 		reserveText.addMouseListener( new RBListener() {
-			public void mouseClicked(MouseEvent e) {
-				HotelfunctionUI.this.setVisible(false);
-				JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-//				 TODO 
-				root.setContentPane(new ReserveUI());
-				reserveText.setForeground(Color.BLACK);
-			}
-		}
-	);
+					public void mouseClicked(MouseEvent e) {
+						HotelfunctionUI.this.setVisible(false);
+						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+		//				 TODO 
+						root.setContentPane(new ReserveUI());
+						reserveText.setForeground(Color.BLACK);
+					}
+				}
+			);
 		
 		// go to InquiryUI
 		JLabel inquiryText = new JLabel("INQUIRY", JLabel.CENTER);
@@ -72,17 +72,17 @@ public class HotelfunctionUI extends JPanel{
 		JLabel logoutText = new JLabel("LOGOUT", JLabel.CENTER);
 		logoutText.setFont(new Font("Dialog", Font.BOLD, 36));
 		logoutText.addMouseListener( new RBListener() {
-			public void mouseClicked(MouseEvent e) {
-			layeredPane.remove(hotelfunction);
-			HotelfunctionUI.this.setVisible(false);
-			JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-			root.setContentPane(new RegistrationUI());
-			validate();
-			repaint();
-			logoutText.setForeground(Color.BLACK);
-			}
-		}
-	);
+					public void mouseClicked(MouseEvent e) {
+						layeredPane.remove(hotelfunction);
+						HotelfunctionUI.this.setVisible(false);
+						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+						root.setContentPane(new RegistrationUI());
+						validate();
+						repaint();
+						logoutText.setForeground(Color.BLACK);
+					}
+				}
+			);
 		
 		hotelfunction.setLayout(new GridLayout(2, 2, 0, 0));
 		hotelfunction.setOpaque(false);

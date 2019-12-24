@@ -26,8 +26,8 @@ public class RegistrationUI extends JPanel {
 		layeredPane.setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
 		Menu.background.setIcon(new ImageIcon("images/Menu/background.png"));
 		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
-		layeredPane.add(Menu.background, new Integer(0));
-		layeredPane.add(subMenu, new Integer(2));
+		layeredPane.add(HotelPreference.background, new Integer(0));
+		layeredPane.add(subMenu, new Integer(1));
 		add(layeredPane);
 	}
 	
@@ -38,25 +38,23 @@ public class RegistrationUI extends JPanel {
 		signInText.setFont(new Font("Arial Black", Font.BOLD, 30));
 		signUpText.setFont(new Font("Arial Black", Font.BOLD, 30));	
 		signInText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						layeredPane.remove(subMenu);
-						layeredPane.add(signIn, new Integer(2));
-						validate();
-						repaint();
-						signInText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					layeredPane.remove(subMenu);
+					layeredPane.add(signIn, new Integer(1));
+					validate();
+					repaint();
+					signInText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		signUpText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						layeredPane.remove(subMenu);
-						layeredPane.add(signUp, new Integer(2));
-						validate();
-						repaint();
-						signUpText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					layeredPane.remove(subMenu);
+					layeredPane.add(signUp, new Integer(1));
+					validate();
+					repaint();
+					signUpText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		buttonPanelet.setLayout(new GridLayout(1, 2, 0, 0));
 		buttonPanelet.setOpaque(false);
 		buttonPanelet.add(signInText);
@@ -192,33 +190,31 @@ public class RegistrationUI extends JPanel {
 		backText.setOpaque(false);
 		
 		loginText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						int ret = main.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
-						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
-						if (ret == 1) {
-							main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
-							RegistrationUI.this.setVisible(false);
-							root.setContentPane(new HotelfunctionUI());
-						} else if (ret == 0) {
-							JOptionPane.showMessageDialog(root, "UNKNOWN ID", "Warning", JOptionPane.ERROR_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(root, "WRONG PASSWORD", "Warning", JOptionPane.ERROR_MESSAGE);							
-						}
-
-						loginText.setForeground(Color.BLACK);
+				public void mouseClicked(MouseEvent e) {
+					int ret = main.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
+					JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
+					if (ret == 1) {
+						main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
+						RegistrationUI.this.setVisible(false);
+						root.setContentPane(new HotelfunctionUI());
+					} else if (ret == 0) {
+						JOptionPane.showMessageDialog(root, "UNKNOWN ID", "Warning", JOptionPane.ERROR_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(root, "WRONG PASSWORD", "Warning", JOptionPane.ERROR_MESSAGE);							
 					}
+	
+					loginText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		backText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						layeredPane.remove(signIn);
-						layeredPane.add(subMenu);
-						validate();
-						repaint();
-						backText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					layeredPane.remove(signIn);
+					layeredPane.add(subMenu);
+					validate();
+					repaint();
+					backText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		
 		buttonPanel.add(backText);
 		buttonPanel.add(loginText);
@@ -233,12 +229,7 @@ public class RegistrationUI extends JPanel {
 		signIn.add(buttonPanel);
 	}
 	
-	private void initsignUp() { 
-		JLabel loginText = new JLabel("SIGN UP and LOGIN", JLabel.CENTER);
-		JLabel cancelText = new JLabel("CANCEL", JLabel.CENTER);
-		JLabel verifyCode = new JLabel("");
-		JTextField inputCode = new JTextField(5);
-		
+	private void initsignUp() { 		
 		signUp.setLayout(new GridLayout(4, 1));
 		signUp.setOpaque(false);
 
@@ -344,6 +335,9 @@ public class RegistrationUI extends JPanel {
 
 		// verify code Panel
 		JPanel verifycodePanel = new JPanel();
+		JLabel verifyCode = new JLabel("");
+		JTextField inputCode = new JTextField(5);
+
 		verifycodePanel.setOpaque(false);
 		verifycodePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		verifycodePanel.setBorder(new EmptyBorder(20, 40, 20, 40));
@@ -369,6 +363,9 @@ public class RegistrationUI extends JPanel {
 
 		// set 'cancel' and 'sign up and login' button
 		JPanel buttons = new JPanel();
+		JLabel loginText = new JLabel("SIGN UP and LOGIN", JLabel.CENTER);
+		JLabel cancelText = new JLabel("CANCEL", JLabel.CENTER);
+
 		buttons.setOpaque(false);
 		buttons.setLayout(new GridLayout(1, 2));
 		buttons.setBorder(new EmptyBorder(20, 40, 20, 40));
@@ -400,7 +397,7 @@ public class RegistrationUI extends JPanel {
 		cancelText.addMouseListener(new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						layeredPane.remove(signUp);
-						layeredPane.add(subMenu, new Integer(2));
+						layeredPane.add(subMenu, new Integer(1));
 						inputID.setText(null);
 						inputPassword.setText(null);
 						inputCode.setText(null);

@@ -25,21 +25,8 @@ import javax.swing.table.TableColumnModel;
  */
 public class Menu extends JPanel {
 	private JLayeredPane layeredPane;
-	public static JLabel background = new JLabel();
+	private JLabel background = new JLabel();
 	final static int frameWidth = 1152, frameHeight = 720;
-
-	// attribute of title
-	private JPanel title = new JPanel();
-	final private int titleWidth = 930, titleHeight = 80;
-	final private Dimension titleCenter = new Dimension(frameWidth / 2, frameHeight / 4);
-	private JLabel titleText = new JLabel("     HOTEL     ", JLabel.CENTER);
-
-	// attribute of sub menu
-	private JPanel subMenu = new JPanel();
-	final private int subMenuWidth = 500, subMenuHeight = 70;
-	final private Dimension subMenuCenter = new Dimension(frameWidth / 2, 524);
-	private JLabel signinText = new JLabel("SIGN IN", JLabel.CENTER);
-	private JLabel signupText = new JLabel("SIGN UP", JLabel.CENTER);
 		
 	// attribute of sign in error - UNKNOWN ID
 	private JPanel Signinerror = new JPanel();
@@ -69,21 +56,6 @@ public class Menu extends JPanel {
 	private JLabel signuperror1Text = new JLabel("WRONG VERIFY CODE.", JLabel.CENTER);
 	private JLabel backsignuperror1 = new JLabel("BACK", JLabel.CENTER);
 
-	// attribute of sign in
-	private JPanel Signin = new JPanel();
-	final private int signinSetWidth = 600, signinSetHeight = 210;
-	final private Dimension signinSetCenter = new Dimension(frameWidth / 2, 450);
-	private JLabel signinlogin = new JLabel("LOGIN", JLabel.CENTER);
-	private JLabel signinback = new JLabel("BACK", JLabel.CENTER);
-	protected JTextField signinidField = new JTextField();
-	protected JPasswordField signinpasswordField = new JPasswordField();
-
-	// attribute of sign up
-	private JPanel Signup = new JPanel();
-	final private int signupSetWidth = 600, signupSetHeight = 270;
-	final private Dimension signupSetCenter = new Dimension(frameWidth / 2, 450);
-	private JLabel signuplogin = new JLabel("SIGN UP and LOGIN", JLabel.CENTER);
-	private JLabel signupcancel = new JLabel("CANCEL", JLabel.CENTER);
 	protected JTextField signupidField = new JTextField(13);
 	protected JPasswordField signuppasswordField = new JPasswordField(13);
 	protected JTextField usercodeField = new JTextField(5);
@@ -1878,7 +1850,7 @@ public class Menu extends JPanel {
 			JLabel l = (JLabel) e.getSource();
 			l.setForeground(Color.black);
 		}
-		
+
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == signupText) {
 				layeredPane.remove(subMenu);
@@ -2048,7 +2020,7 @@ public class Menu extends JPanel {
 						repaint();
 						nextentersearch.setForeground(Color.black);
 					}
-				} else {// Invalid date
+				} else {// Invaid date
 					layeredPane.add(Invalid_date_error, new Integer(3));
 					entercheckindateField.setText("SELECT DATE");
 					entercheckoutdateField.setText("SELECT DATE");
@@ -2523,3 +2495,96 @@ public class Menu extends JPanel {
 	};
 }
 
+/**
+ * 
+ *
+ */
+
+
+/**
+ * setting up the color icon 
+ */
+class ColorIcon implements Icon {
+	private final Color color;
+
+	protected ColorIcon(Color color) {
+		this.color = color;
+	}
+
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g.create();
+		g2.translate(x, y);
+		g2.setPaint(color);
+		g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+		g2.dispose();
+	}
+
+	public int getIconWidth() {
+		return 12;
+	}
+
+	public int getIconHeight() {
+		return 12;
+	}
+
+}
+
+
+class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, TableCellEditor, ActionListener {
+	JTable table;
+	JButton renderButton;
+	JButton editButton;
+	String text;
+
+	public ButtonColumn(JTable table, int column) {
+		super();
+		this.table = table;
+		renderButton = new JButton();
+		editButton = new JButton();
+		editButton.setFocusPainted(false);
+		editButton.addActionListener(this);
+
+		TableColumnModel columnModel = table.getColumnModel();
+		columnModel.getColumn(column).setCellRenderer(this);
+		columnModel.getColumn(column).setCellEditor(this);
+	}
+
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+			int row, int column) {
+		if (hasFocus) {
+			renderButton.setForeground(table.getForeground());
+			renderButton.setBackground(UIManager.getColor("Button.background"));
+
+		} else if (isSelected) {
+			renderButton.setForeground(table.getSelectionForeground());
+			renderButton.setBackground(table.getSelectionBackground());
+		} else {
+			renderButton.setForeground(table.getForeground());
+			renderButton.setBackground(UIManager.getColor("Button.background"));
+		}
+		renderButton.setText((value == null) ? " " : value.toString());
+		return renderButton;
+	}
+
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		text = (value == null) ? " " : value.toString();
+		editButton.setText(text);
+		return editButton;
+	}
+
+	public Object getCellEditorValue() {
+		return text;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		fireEditingStopped();
+		Object hid = table.getModel().getValueAt(table.getSelectedRow(), 0);
+		Object sroom = table.getModel().getValueAt(table.getSelectedRow(), 4);
+		Object droom = table.getModel().getValueAt(table.getSelectedRow(), 5);
+		Object qroom = table.getModel().getValueAt(table.getSelectedRow(), 6);
+		Menu.reservehotelid.setSelectedIndex((int) hid);
+		Menu.reservesingleroomField.setText(sroom.toString());
+		Menu.reservedoubleroomField.setText(droom.toString());
+		Menu.reservequadroomField.setText(qroom.toString());
+	}
+}

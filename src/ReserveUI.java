@@ -22,61 +22,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class ReserveUI extends JPanel{
-	private String cid, cod;
-	private int people, rooms, hid, sroom, droom, qroom;
+public class ReserveUI extends JPanel {
+	private static final long serialVersionUID = 1L;
+	
+	private boolean fromSearch = false;
+	private String checkInDate, checkOutDate;
+	private int people, rooms, hotelID, sRoom, dRoom, qRoom;
 	
 	final private int reserveWidth = 620, reserveHeight = 300;
 	final private Dimension reserveCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private JPanel Reserve = new JPanel();
-	
-	private JPanel reservebuttons = new JPanel();
-	private JLabel cancelreserve = new JLabel("CANCEL", JLabel.CENTER);
-	private JLabel backreserve = new JLabel("BACK", JLabel.CENTER);
-	private JLabel nextreserve = new JLabel("NEXT", JLabel.CENTER);
-	protected static JComboBox<Object> reservehotelid = new JComboBox<Object>();
-	protected JTextField reservecheckindateField = new JTextField(10);
-	protected JTextField reservecheckoutdateField = new JTextField(10);
-	protected static JTextField reservesingleroomField = new JTextField(2);
-	protected static JTextField reservedoubleroomField = new JTextField(2);
-	protected static JTextField reservequadroomField = new JTextField(2);
-	
-	public ReserveUI(String _cid, String _cod, int _people, int _rooms, Object _hid, Object _sroom, Object _droom, Object _qroom) {
-		// TODO Auto-generated constructor stub
-		initPanel();
-		initLayerPane();
-		initReserve();
-		cid =_cid;
-		cod = _cod;
-		people = _people;
-		rooms = _rooms;
-		hid = (int)_hid;
-		sroom = (int)_sroom;
-		droom = (int)_droom;
-		qroom = (int)_qroom;
-		reservecheckindateField.setText(cid);
-		reservecheckoutdateField.setText(cod);
-		reservehotelid.setSelectedIndex((int) _hid);
-		reservesingleroomField.setText(_sroom.toString());
-		reservesingleroomField.setEditable(false);
-		reservedoubleroomField.setText(_droom.toString());
-		reservedoubleroomField.setEditable(false);
-		reservequadroomField.setText(_qroom.toString());
-		reservequadroomField.setEditable(false);
-		reservebuttons.removeAll();
-		reservebuttons.add(cancelreserve);
-		reservebuttons.add(backreserve);
-		reservebuttons.add(nextreserve);
-	}
 
-	public ReserveUI() {
-		// TODO Auto-generated constructor stub
-		initPanel();
-		initLayerPane();
-		initReserve();
-	}
-
+	private JPanel reserve = new JPanel();
+	
 	private void initPanel() {
 		setLayout(new GridLayout(1, 1));
 		setOpaque(false);
@@ -88,177 +46,195 @@ public class ReserveUI extends JPanel{
 		Menu.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
 		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
 		layeredPane.add(Menu.background, new Integer(0));
-		layeredPane.add(Reserve, new Integer(1));
+		layeredPane.add(reserve, new Integer(1));
 		add(layeredPane);
 	}
 	
-	private void initReserve() {
-		Reserve.setBounds(reserveCenter.width - (reserveWidth / 2), reserveCenter.height - (reserveHeight / 2),
-				reserveWidth, reserveHeight);
+	private void initReserve() {	
 		
-		Reserve.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
-		Reserve.setLayout(new GridLayout(5, 1));
-		Reserve.setOpaque(false);
-
 		// check in date panel
-		JPanel checkinPanel = new JPanel();
-		checkinPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		checkinPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		checkinPanel.setOpaque(false);
+		JPanel checkInPanel = new JPanel();
+		
+		checkInPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		checkInPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
+		checkInPanel.setOpaque(false);
+		
 		// enter check in date
-		JLabel checkin = new JLabel("  CHECK IN DATE: ");
+		JLabel checkin = new JLabel("    CHECK IN DATE : ");
+		JTextField inputCheckInDate = new JTextField(10);
+		
 		checkin.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		// setting check in yyyy/mm/dd
-		reservecheckindateField.setHorizontalAlignment(SwingConstants.CENTER);
-		reservecheckindateField.setEditable(false);
-		reservecheckindateField.setFont(new Font("Serif", Font.BOLD, 23));
-		reservecheckindateField.setBackground(new Color(255, 255, 255));
-		reservecheckindateField.setText("SELECT DATE");
-		reservecheckindateField.setOpaque(true);
-		reservecheckindateField.setBounds(267, 15, 105, 40);
-		reservecheckindateField.setColumns(10);
-		reservecheckindateField.addMouseListener(new MouseAdapter() {
+		inputCheckInDate.setHorizontalAlignment(SwingConstants.CENTER);
+		inputCheckInDate.setEditable(false);
+		inputCheckInDate.setFont(new Font("Serif", Font.BOLD, 23));
+		inputCheckInDate.setBackground(new Color(255, 255, 255));
+		inputCheckInDate.setOpaque(true);
+		inputCheckInDate.setBounds(267, 15, 105, 40);
+		inputCheckInDate.setColumns(10);
+		inputCheckInDate.setText((checkInDate == "") ? "SELECT DATE" : checkInDate);
+		inputCheckInDate.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				DatePopup DP = new DatePopup(reservecheckindateField);
-				DP.showDialog();
+				DatePopup dp = new DatePopup(inputCheckInDate);
+				dp.showDialog();
 			}
 		});
-		// check in panel adding
-		checkinPanel.add(checkin);
-		checkinPanel.add(reservecheckindateField);
+		checkInPanel.add(checkin);
+		checkInPanel.add(inputCheckInDate);
 
 		// check out date panel
-		JPanel checkoutPanel = new JPanel();
-		checkoutPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		checkoutPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		checkoutPanel.setOpaque(false);
+		JPanel checkOutPanel = new JPanel();
+		
+		checkOutPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		checkOutPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
+		checkOutPanel.setOpaque(false);
+		
 		// enter check out date
-		JLabel checkout = new JLabel("  CHECK OUT DATE: ");
-		checkout.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		// setting check in yyyy/mm/dd
-		reservecheckoutdateField.setHorizontalAlignment(SwingConstants.CENTER);
-		reservecheckoutdateField.setEditable(false);
-		reservecheckoutdateField.setFont(new Font("Serif", Font.BOLD, 23));
-		reservecheckoutdateField.setBackground(new Color(255, 255, 255));
-		reservecheckoutdateField.setText("SELECT DATE");
-		reservecheckoutdateField.setOpaque(true);
-		reservecheckoutdateField.setBounds(267, 15, 105, 40);
-		reservecheckoutdateField.setColumns(10);
-		reservecheckoutdateField.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				DatePopup DP = new DatePopup(reservecheckoutdateField);
-				DP.showDialog();
-			}
-		});
-		// check out panel adding
-		checkoutPanel.add(checkout);
-		checkoutPanel.add(reservecheckoutdateField);
+		JLabel checkOut = new JLabel(" CHECK OUT DATE : ");
+		JTextField inputCheckOutDate = new JTextField(10);
+		
+		checkOut.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputCheckOutDate.setHorizontalAlignment(SwingConstants.CENTER);
+		inputCheckOutDate.setEditable(false);
+		inputCheckOutDate.setFont(new Font("Serif", Font.BOLD, 23));
+		inputCheckOutDate.setBackground(new Color(255, 255, 255));
+		inputCheckOutDate.setOpaque(true);
+		inputCheckOutDate.setBounds(267, 15, 105, 40);
+		inputCheckOutDate.setColumns(10);
+		inputCheckOutDate.setText((checkOutDate == "") ? "SELECT DATE" : checkOutDate);
+		inputCheckOutDate.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					DatePopup DP = new DatePopup(inputCheckOutDate);
+					DP.showDialog();
+				}
+			});
+		checkOutPanel.add(checkOut);
+		checkOutPanel.add(inputCheckOutDate);
 
 		// hotelID Panel
 		JPanel hotelIDPanel = new JPanel();
+		
 		hotelIDPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		hotelIDPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		hotelIDPanel.setOpaque(false);
+		
 		// select hotel ID
-		JLabel hotelID = new JLabel("    HotelID     : ");
-		hotelID.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		JLabel hotelIDLabel = new JLabel(" HotelID : ");
+		JComboBox<Object> hotelIDList = new JComboBox<Object>();
+		
+		hotelIDLabel.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		String[] option = new String[1500];
-		for (Integer i = 0; i < 1500; i++) {
+		for (Integer i = 0; i < 1500; i++)
 			option[i] = i.toString();
-		}
-		reservehotelid = new JComboBox<Object>(option);
-		hotelIDPanel.add(hotelID);
-		hotelIDPanel.add(reservehotelid);
+		hotelIDList = new JComboBox<Object>(option);
+		hotelIDList.setSelectedIndex(hotelID);
+		hotelIDPanel.add(hotelIDLabel);
+		hotelIDPanel.add(hotelIDList);
 
 		// number of room panel
-		JPanel roomPanel = new JPanel();
-		roomPanel.setLayout(new GridLayout(1, 6));
+		JPanel roomPanel = new JPanel();	
+
 		roomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		roomPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		roomPanel.setOpaque(false);
+		
 		// single room
-		JLabel singleroom = new JLabel("Single: ");
-		singleroom.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		reservesingleroomField.setHorizontalAlignment(SwingConstants.CENTER);
-		reservesingleroomField.setEditable(true);
-		reservesingleroomField.setFont(new Font("Serif", Font.BOLD, 23));
-		reservesingleroomField.setText("");
-		reservesingleroomField.addKeyListener(new KeyAdapter() {// can only enter number!
-			public void keyTyped(KeyEvent e) {
-				char keyChar = e.getKeyChar();
-				if (!(keyChar >= '0' && keyChar <= '9')) {
-					e.consume();
+		JLabel singleRoom = new JLabel(" Single: ");
+		JTextField inputSingleRoom = new JTextField(2);
+		
+		singleRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));		
+		inputSingleRoom.setHorizontalAlignment(SwingConstants.CENTER);
+		inputSingleRoom.setEditable(true);
+		inputSingleRoom.setFont(new Font("Serif", Font.BOLD, 23));
+		inputSingleRoom.setText("");
+		inputSingleRoom.addKeyListener(new KeyAdapter() { // can only enter number!
+				public void keyTyped(KeyEvent e) {
+					char keyChar = e.getKeyChar();
+					if (!(keyChar >= '0' && keyChar <= '9')) {
+						e.consume();
+					}
 				}
-			}
-		});
+			});
+		
 		// double room
-		JLabel doubleroom = new JLabel("Double: ");
-		doubleroom.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		reservedoubleroomField.setHorizontalAlignment(SwingConstants.CENTER);
-		reservedoubleroomField.setEditable(true);
-		reservedoubleroomField.setFont(new Font("Serif", Font.BOLD, 23));
-		reservedoubleroomField.setText("");
-		reservedoubleroomField.addKeyListener(new KeyAdapter() {// can only enter number!
-			public void keyTyped(KeyEvent e) {
-				char keyChar = e.getKeyChar();
-				if (!(keyChar >= '0' && keyChar <= '9')) {
-					e.consume();
+		JLabel doubleRoom = new JLabel(" Double: ");
+		JTextField inputDoubleRoom = new JTextField(2);
+		
+		doubleRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputDoubleRoom.setHorizontalAlignment(SwingConstants.CENTER);
+		inputDoubleRoom.setEditable(true);
+		inputDoubleRoom.setFont(new Font("Serif", Font.BOLD, 23));
+		inputDoubleRoom.setText("");
+		inputDoubleRoom.addKeyListener(new KeyAdapter() { // can only enter number!
+				public void keyTyped(KeyEvent e) {
+					char keyChar = e.getKeyChar();
+					if (!(keyChar >= '0' && keyChar <= '9')) {
+						e.consume();
+					}
 				}
-			}
-		});
+			});
+		
 		// quad room
-		JLabel quadroom = new JLabel("Quad: ");
-		quadroom.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		reservequadroomField.setHorizontalAlignment(SwingConstants.CENTER);
-		reservequadroomField.setEditable(true);
-		reservequadroomField.setFont(new Font("Serif", Font.BOLD, 23));
-		reservequadroomField.setText("");
-		reservequadroomField.addKeyListener(new KeyAdapter() {// can only enter number!
-			public void keyTyped(KeyEvent e) {
-				char keyChar = e.getKeyChar();
-				if (!(keyChar >= '0' && keyChar <= '9')) {
-					e.consume();
+		JLabel quadRoom = new JLabel(" Quad: ");
+		JTextField inputQuadRoom = new JTextField(2);
+		
+		quadRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputQuadRoom.setHorizontalAlignment(SwingConstants.CENTER);
+		inputQuadRoom.setEditable(true);
+		inputQuadRoom.setFont(new Font("Serif", Font.BOLD, 23));
+		inputQuadRoom.setText("");
+		inputQuadRoom.addKeyListener(new KeyAdapter() { // can only enter number!
+				public void keyTyped(KeyEvent e) {
+					char keyChar = e.getKeyChar();
+					if (!(keyChar >= '0' && keyChar <= '9')) {
+						e.consume();
+					}
 				}
-			}
-		});
-		// room panel adding
-		roomPanel.add(singleroom);
-		roomPanel.add(reservesingleroomField);
-		roomPanel.add(doubleroom);
-		roomPanel.add(reservedoubleroomField);
-		roomPanel.add(quadroom);
-		roomPanel.add(reservequadroomField);
+			});
+		
+		roomPanel.add(singleRoom);
+		roomPanel.add(inputSingleRoom);
+		roomPanel.add(doubleRoom);
+		roomPanel.add(inputDoubleRoom);
+		roomPanel.add(quadRoom);
+		roomPanel.add(inputQuadRoom);
 
 		// setting 'back' and 'next' buttons
-		reservebuttons.setLayout(new GridLayout(1, 3));
-		reservebuttons.setOpaque(false);
-		cancelreserve.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		backreserve.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		nextreserve.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		reservebuttons.add(cancelreserve);
-//		reservebuttons.add(backreserve);
-		reservebuttons.add(nextreserve);
+		JPanel buttons = new JPanel();
+		JLabel cancelText = new JLabel("CANCEL", JLabel.CENTER);
+		JLabel backText = new JLabel("BACK", JLabel.CENTER);
+		JLabel nextText = new JLabel("NEXT", JLabel.CENTER);
 		
-		cancelreserve.addMouseListener( new RBListener() {
+		buttons.setLayout(new GridLayout(1, 3));
+		buttons.setOpaque(false);
+		cancelText.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		backText.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		nextText.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		buttons.add(cancelText);
+		buttons.add(backText);
+		buttons.add(nextText);
+		
+		if (fromSearch)
+			backText.setVisible(false);
+		
+		cancelText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 					ReserveUI.this.setVisible(false);
 					JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
 					root.setContentPane(new HotelfunctionUI());
-					cancelreserve.setForeground(Color.BLACK);
+					cancelText.setForeground(Color.BLACK);
 				}
-			}
-		);
+			});
 		
-		backreserve.addMouseListener( new RBListener() {
+		backText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					String s1 = reservecheckindateField.getText();
-					String s2 = reservecheckoutdateField.getText();
+					String s1 = inputCheckInDate.getText();
+					String s2 = inputCheckOutDate.getText();
 					if (main.CountDaysBetween(s1, s2) > 0) {
-						ArrayList<AvailableHotelRoom> AHR = main.SearchAvailableHotels(cid, cod, people, rooms);
+						ArrayList<AvailableHotelRoom> AHR = main.SearchAvailableHotels(checkInDate, checkOutDate, people, rooms);
 						if (AHR.size() > 0) { // if find available hotel
 							ReserveUI.this.setVisible(false);
 							JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
-							root.setContentPane(new HotellistUI(cid, cod, people, rooms, AHR));
+							root.setContentPane(new HotellistUI(checkInDate, checkOutDate, people, rooms, AHR));
 						}
 						else {  // TODO no matched hotel
 							// show error message
@@ -266,19 +242,61 @@ public class ReserveUI extends JPanel{
 					} else  { // TODO Invalid date (date format error)
 						// show error message
 					}
-					backreserve.setForeground(Color.BLACK);
+					backText.setForeground(Color.BLACK);
 				}
-			}
-		);
+			});
 
 		// Reserve adding Panel
-		Reserve.add(checkinPanel);
-		Reserve.add(checkoutPanel);
-		Reserve.add(hotelIDPanel);
-		Reserve.add(roomPanel);
-		Reserve.add(reservebuttons);
+		reserve.setBounds(reserveCenter.width - (reserveWidth / 2), reserveCenter.height - (reserveHeight / 2),
+				reserveWidth, reserveHeight);
+		reserve.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
+		reserve.setLayout(new GridLayout(5, 1));
+		reserve.setOpaque(false);
+		reserve.add(checkInPanel);
+		reserve.add(checkOutPanel);
+		reserve.add(hotelIDPanel);
+		reserve.add(roomPanel);
+		reserve.add(buttons);
 	}
 	
-	
+	public ReserveUI(String _cid, String _cod, int _people, int _rooms, Object _hid, Object _sroom, Object _droom, Object _qroom) {
+		fromSearch = true;
+		checkInDate = _cid;
+		checkOutDate = _cod;
+		people = _people;
+		rooms = _rooms;
+		hotelID = (int)_hid;
+		sRoom = (int)_sroom;
+		dRoom = (int)_droom;
+		qRoom = (int)_qroom;
+		reservesingleroomField.setText(_sroom.toString());
+		reservesingleroomField.setEditable(false);
+		reservedoubleroomField.setText(_droom.toString());
+		reservedoubleroomField.setEditable(false);
+		reservequadroomField.setText(_qroom.toString());
+		reservequadroomField.setEditable(false);
+		buttons.removeAll();
+		buttons.add(cancelText);
+		buttons.add(backText);
+		buttons.add(nextText);
+		initPanel();
+		initLayerPane();
+		initReserve();
+	}
+
+	public ReserveUI() {
+		fromSearch = false;
+		checkInDate = "";
+		checkOutDate = "";
+		people = 0;
+		rooms = 0;
+		hotelID = 0;
+		sRoom = 0;
+		dRoom = 0;
+		qRoom = 0;		
+		initPanel();
+		initLayerPane();
+		initReserve();
+	}
 
 }
