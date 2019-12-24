@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
  * @version 1.0
  * @since 2019-05-31
  */
+
 public class main {
 	public static Hotel[] HotelList;
 	public static User user;
@@ -31,13 +32,13 @@ public class main {
 	 * 
 	 * @param args Unused.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		databaseUtil.buildConnection();
 //		databaseUtil.initDatabase();
 		ReadHotelList();
 		HotelPreference program = new HotelPreference();
 		program.setVisible(true);
-	}
+	}*/
 
 	/**
 	 * This method reads the hotel list.
@@ -128,7 +129,7 @@ public class main {
 				return false;
 		return true;
 	}
-
+	
 	/**
 	 * This method checks if all the rooms in the hotel of the current order are available for booking.
 	 * It calls the CheckRoomIsAvailable() to check the rooms one by one.
