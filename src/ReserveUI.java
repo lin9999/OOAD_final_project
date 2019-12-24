@@ -143,9 +143,9 @@ public class ReserveUI extends JPanel {
 		
 		singleRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));		
 		inputSingleRoom.setHorizontalAlignment(SwingConstants.CENTER);
-		inputSingleRoom.setEditable(true);
+		inputSingleRoom.setEditable(!fromSearch);
 		inputSingleRoom.setFont(new Font("Serif", Font.BOLD, 23));
-		inputSingleRoom.setText("");
+		inputSingleRoom.setText(new Integer(sRoom).toString());
 		inputSingleRoom.addKeyListener(new KeyAdapter() { // can only enter number!
 				public void keyTyped(KeyEvent e) {
 					char keyChar = e.getKeyChar();
@@ -161,9 +161,9 @@ public class ReserveUI extends JPanel {
 		
 		doubleRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		inputDoubleRoom.setHorizontalAlignment(SwingConstants.CENTER);
-		inputDoubleRoom.setEditable(true);
+		inputDoubleRoom.setEditable(!fromSearch);
 		inputDoubleRoom.setFont(new Font("Serif", Font.BOLD, 23));
-		inputDoubleRoom.setText("");
+		inputDoubleRoom.setText(new Integer(dRoom).toString());
 		inputDoubleRoom.addKeyListener(new KeyAdapter() { // can only enter number!
 				public void keyTyped(KeyEvent e) {
 					char keyChar = e.getKeyChar();
@@ -179,9 +179,9 @@ public class ReserveUI extends JPanel {
 		
 		quadRoom.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		inputQuadRoom.setHorizontalAlignment(SwingConstants.CENTER);
-		inputQuadRoom.setEditable(true);
+		inputQuadRoom.setEditable(!fromSearch);
 		inputQuadRoom.setFont(new Font("Serif", Font.BOLD, 23));
-		inputQuadRoom.setText("");
+		inputQuadRoom.setText(new Integer(qRoom).toString());
 		inputQuadRoom.addKeyListener(new KeyAdapter() { // can only enter number!
 				public void keyTyped(KeyEvent e) {
 					char keyChar = e.getKeyChar();
@@ -213,8 +213,7 @@ public class ReserveUI extends JPanel {
 		buttons.add(backText);
 		buttons.add(nextText);
 		
-		if (fromSearch)
-			backText.setVisible(false);
+		backText.setVisible(fromSearch);
 		
 		cancelText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
@@ -229,7 +228,7 @@ public class ReserveUI extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					String s1 = inputCheckInDate.getText();
 					String s2 = inputCheckOutDate.getText();
-					if (main.CountDaysBetween(s1, s2) > 0) {
+					if (RoomChecker.CountDaysBetween(s1, s2) > 0) {
 						ArrayList<AvailableHotelRoom> AHR = main.SearchAvailableHotels(checkInDate, checkOutDate, people, rooms);
 						if (AHR.size() > 0) { // if find available hotel
 							ReserveUI.this.setVisible(false);
@@ -269,16 +268,6 @@ public class ReserveUI extends JPanel {
 		sRoom = (int)_sroom;
 		dRoom = (int)_droom;
 		qRoom = (int)_qroom;
-		reservesingleroomField.setText(_sroom.toString());
-		reservesingleroomField.setEditable(false);
-		reservedoubleroomField.setText(_droom.toString());
-		reservedoubleroomField.setEditable(false);
-		reservequadroomField.setText(_qroom.toString());
-		reservequadroomField.setEditable(false);
-		buttons.removeAll();
-		buttons.add(cancelText);
-		buttons.add(backText);
-		buttons.add(nextText);
 		initPanel();
 		initLayerPane();
 		initReserve();

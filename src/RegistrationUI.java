@@ -19,13 +19,13 @@ public class RegistrationUI extends JPanel {
 	private void initPanel() {
 		setLayout(new GridLayout(1, 1));
 		setOpaque(false);
-		setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+		setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
 	}
 	
 	private void initLayerPane() {
-		layeredPane.setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
 		Menu.background.setIcon(new ImageIcon("images/Menu/background.png"));
-		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
+		Menu.background.setBounds(0, 0, HotelPreference.frameWidth, HotelPreference.frameHeight);
 		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(subMenu, new Integer(1));
 		add(layeredPane);
@@ -191,7 +191,7 @@ public class RegistrationUI extends JPanel {
 		
 		loginText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					int ret = main.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
+					int ret = Registration.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
 					JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
 					if (ret == 1) {
 						main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
@@ -355,7 +355,7 @@ public class RegistrationUI extends JPanel {
 		});
 		inputCode.setBackground(new Color(232, 232, 232, 120));
 		verifyCode.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		verifyCode.setText(main.getRandomString(6));
+		verifyCode.setText(Registration.getVerifyCode(6));
 		// verify code panel adding
 		verifycodePanel.add(verifyCodeMessage);
 		verifycodePanel.add(inputCode);
@@ -375,7 +375,7 @@ public class RegistrationUI extends JPanel {
 		loginText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
-						if (main.SignUpCheck(inputID.getText())) {
+						if (Registration.SignUpCheck(inputID.getText())) {
 							if (inputCode.getText().equals(verifyCode.getText())) {
 								main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 								databaseUtil.insertUser(main.user);
@@ -383,11 +383,11 @@ public class RegistrationUI extends JPanel {
 								root.setContentPane(new HotelfunctionUI());								
 							} else {
 								JOptionPane.showMessageDialog(root, "WRONG VERIFY CODE", "Warning", JOptionPane.ERROR_MESSAGE);
-								verifyCode.setText(main.getRandomString(6));
+								verifyCode.setText(Registration.getVerifyCode(6));
 							}
 						} else {
 							JOptionPane.showMessageDialog(root, "USER ID ALREADY EXISTS", "Warning", JOptionPane.ERROR_MESSAGE);							
-							verifyCode.setText(main.getRandomString(6));
+							verifyCode.setText(Registration.getVerifyCode(6));
 						}
 						loginText.setForeground(Color.BLACK);
 					}
