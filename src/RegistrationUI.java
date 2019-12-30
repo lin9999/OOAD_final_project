@@ -24,7 +24,7 @@ public class RegistrationUI extends JPanel {
 	
 	private void initLayerPane() {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
-		HotelPreference.background.setIcon(new ImageIcon("images/HotelPreference/background.png"));
+		HotelPreference.background.setIcon(new ImageIcon("images/Menu/background.png"));
 		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(subHotelPreference, new Integer(1));
 		add(layeredPane);

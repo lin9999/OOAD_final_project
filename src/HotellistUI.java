@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -42,7 +41,6 @@ public class HotellistUI extends JPanel{
 	
 	private void initLayerPane() {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
-		HotelPreference.background.setIcon(new ImageIcon("images/HotelPreference/hotelbackground.jpg"));
 		HotelPreference.background.setBounds(0, 0, HotelPreference.frameWidth, HotelPreference.frameHeight);
 		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(Hotellist, new Integer(1));

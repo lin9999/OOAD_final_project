@@ -232,7 +232,6 @@ public class ShowOrderUI extends JPanel{
 	
 	private void initLayerPane() {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
-		HotelPreference.background.setIcon(new ImageIcon("images/HotelPreference/hotelbackground.jpg"));
 		HotelPreference.background.setBounds(0, 0, HotelPreference.frameWidth, HotelPreference.frameHeight);
 		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(Reserveorder, new Integer(1));

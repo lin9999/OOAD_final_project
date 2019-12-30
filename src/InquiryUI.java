@@ -8,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -35,7 +34,6 @@ public class InquiryUI extends JPanel {
 	
 	private void initLayerPane() {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
-		HotelPreference.background.setIcon(new ImageIcon("images/HotelPreference/hotelbackground.jpg"));
 		HotelPreference.background.setBounds(0, 0, HotelPreference.frameWidth, HotelPreference.frameHeight);
 		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(inquiry, new Integer(1));

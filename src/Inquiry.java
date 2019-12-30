@@ -93,7 +93,7 @@ public class Inquiry {
 		long Days = RoomChecker.CountDaysBetween(order.getCheckInDate(), order.getCheckOutDate());
 		long D = RoomChecker.CountDaysBetween(nCID, nCOD);
 		
-		return D > 0 && D < Days && RoomChecker.CountDaysBetween(order.getCheckInDate(), nCID) >= 0;
+		return D > 0 && D <= Days && RoomChecker.CountDaysBetween(order.getCheckInDate(), nCID) >= 0;
 	}
 
 	/**
