@@ -12,6 +12,8 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.border.AbstractBorder;
 
 class RoundedCornerBorder extends AbstractBorder {
+	private static final long serialVersionUID = 1L;
+	
 	private static final Color ALPHA_ZERO = new Color(0x0, true);
 
 	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {

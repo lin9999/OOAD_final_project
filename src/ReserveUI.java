@@ -7,20 +7,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableModel;
 
 public class ReserveUI extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -30,7 +31,7 @@ public class ReserveUI extends JPanel {
 	private int people, rooms, hotelID, sRoom, dRoom, qRoom;
 	
 	final private int reserveWidth = 620, reserveHeight = 300;
-	final private Dimension reserveCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
+	final private Dimension reserveCenter = new Dimension(HotelPreference.frameWidth / 2, HotelPreference.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
 
 	private JPanel reserve = new JPanel();
@@ -38,20 +39,17 @@ public class ReserveUI extends JPanel {
 	private void initPanel() {
 		setLayout(new GridLayout(1, 1));
 		setOpaque(false);
-		setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+		setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
 	}
 	
 	private void initLayerPane() {
-		layeredPane.setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
-		Menu.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
-		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
-		layeredPane.add(Menu.background, new Integer(0));
+		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
+		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(reserve, new Integer(1));
 		add(layeredPane);
 	}
 	
 	private void initReserve() {	
-		
 		// check in date panel
 		JPanel checkInPanel = new JPanel();
 		
@@ -73,11 +71,11 @@ public class ReserveUI extends JPanel {
 		inputCheckInDate.setColumns(10);
 		inputCheckInDate.setText((checkInDate == "") ? "SELECT DATE" : checkInDate);
 		inputCheckInDate.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				DatePopup dp = new DatePopup(inputCheckInDate);
-				dp.showDialog();
-			}
-		});
+				public void mouseClicked(MouseEvent e) {
+					DatePopup dp = new DatePopup(inputCheckInDate);
+					dp.showDialog();
+				}
+			});
 		checkInPanel.add(checkin);
 		checkInPanel.add(inputCheckInDate);
 
@@ -103,8 +101,8 @@ public class ReserveUI extends JPanel {
 		inputCheckOutDate.setText((checkOutDate == "") ? "SELECT DATE" : checkOutDate);
 		inputCheckOutDate.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					DatePopup DP = new DatePopup(inputCheckOutDate);
-					DP.showDialog();
+					DatePopup dp = new DatePopup(inputCheckOutDate);
+					dp.showDialog();
 				}
 			});
 		checkOutPanel.add(checkOut);
@@ -119,7 +117,7 @@ public class ReserveUI extends JPanel {
 		
 		// select hotel ID
 		JLabel hotelIDLabel = new JLabel(" HotelID : ");
-		JComboBox<Object> hotelIDList = new JComboBox<Object>();
+		JComboBox<Object> hotelIDList;
 		
 		hotelIDLabel.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		String[] option = new String[1500];
@@ -226,25 +224,49 @@ public class ReserveUI extends JPanel {
 		
 		backText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					String s1 = inputCheckInDate.getText();
-					String s2 = inputCheckOutDate.getText();
-					if (RoomChecker.CountDaysBetween(s1, s2) > 0) {
-						ArrayList<AvailableHotelRoom> AHR = main.SearchAvailableHotels(checkInDate, checkOutDate, people, rooms);
+					String CID = inputCheckInDate.getText();
+					String COD = inputCheckOutDate.getText();
+	
+					JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
+					if (RoomChecker.CountDaysBetween(CID, COD) > 0) {
+						ArrayList<AvailableHotelRoom> AHR = Search.SearchAvailableHotels(CID, COD, people, rooms);
 						if (AHR.size() > 0) { // if find available hotel
 							ReserveUI.this.setVisible(false);
-							JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
-							root.setContentPane(new HotellistUI(checkInDate, checkOutDate, people, rooms, AHR));
+							root.setContentPane(new HotellistUI(CID, COD, people, rooms, AHR));
+						} else {
+							JOptionPane.showMessageDialog(root, "NO MATCHED HOTEL", "Warning", JOptionPane.ERROR_MESSAGE);
 						}
-						else {  // TODO no matched hotel
-							// show error message
-						}
-					} else  { // TODO Invalid date (date format error)
-						// show error message
+					} else {
+						JOptionPane.showMessageDialog(root, "INVALID DATE", "Warning", JOptionPane.ERROR_MESSAGE);
 					}
-					backText.setForeground(Color.BLACK);
+					nextText.setForeground(Color.BLACK);
 				}
 			});
-
+		
+		nextText.addMouseListener( new RBListener() {
+				public void mouseClicked(MouseEvent e) {
+					String CID = inputCheckInDate.getText();
+					String COD = inputCheckOutDate.getText();
+	
+					JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
+					if (RoomChecker.CountDaysBetween(CID, COD) > 0 && RoomChecker.CountDaysBetween(new SimpleDateFormat("yyyy/MM/dd").format(new Date()), COD) < 365) {
+						int HotelID = Integer.parseInt(hotelIDList.getSelectedItem().toString());
+						int sNum = Integer.parseInt(inputSingleRoom.getText());
+						int dNum = Integer.parseInt(inputDoubleRoom.getText());
+						int qNum = Integer.parseInt(inputQuadRoom.getText());
+						Order order = Reserve.BookHotel(BookingSystem.user, CID, COD, HotelID, sNum, dNum, qNum);
+						if (order != null) {
+							ReserveUI.this.setVisible(false);
+							root.setContentPane(new ShowOrderUI(order));
+						} else {
+							JOptionPane.showMessageDialog(root, "Sorry, THERE HAS NO VACANT SUITES!", "Warning", JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						JOptionPane.showMessageDialog(root, "INVALID DATE", "Warning", JOptionPane.ERROR_MESSAGE);
+					}
+					nextText.setForeground(Color.BLACK);
+				}
+			});
 		// Reserve adding Panel
 		reserve.setBounds(reserveCenter.width - (reserveWidth / 2), reserveCenter.height - (reserveHeight / 2),
 				reserveWidth, reserveHeight);
@@ -258,19 +280,19 @@ public class ReserveUI extends JPanel {
 		reserve.add(buttons);
 	}
 	
-	public ReserveUI(String _cid, String _cod, int _people, int _rooms, Object _hid, Object _sroom, Object _droom, Object _qroom) {
+	public ReserveUI(String _cid, String _cod, int _people, int _rooms, int _hid, int _sRoom, int _dRoom, int _qRoom) {
 		fromSearch = true;
 		checkInDate = _cid;
 		checkOutDate = _cod;
 		people = _people;
 		rooms = _rooms;
-		hotelID = (int)_hid;
-		sRoom = (int)_sroom;
-		dRoom = (int)_droom;
-		qRoom = (int)_qroom;
+		hotelID = _hid;
+		sRoom = _sRoom;
+		dRoom = _dRoom;
+		qRoom = _qRoom;
 		initPanel();
-		initLayerPane();
 		initReserve();
+		initLayerPane();
 	}
 
 	public ReserveUI() {
@@ -284,8 +306,8 @@ public class ReserveUI extends JPanel {
 		dRoom = 0;
 		qRoom = 0;		
 		initPanel();
-		initLayerPane();
 		initReserve();
+		initLayerPane();
 	}
 
 }

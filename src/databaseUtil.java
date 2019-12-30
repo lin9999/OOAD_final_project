@@ -1,12 +1,7 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import org.json.simple.*;
-import org.json.simple.parser.*;
 
 /**
  * <h1>This is the class of database<\h1>
@@ -351,45 +346,5 @@ public class databaseUtil {
 			return -1;
 		}
 		
-	}
-	/**
-	 * main method to test databaseUtil.java
-	 * @param args not use
-	 */
-	public static void main(String[] args) {
-		buildConnection();
-		initDatabase();
-		String test = "";
-		
-		ArrayList<Integer> s, d, q;
-		s = new ArrayList<Integer>();
-		s.add(1);
-		s.add(2);
-		
-		d = new ArrayList<Integer>();
-		d.add(2);
-		d.add(3);
-		
-		q = new ArrayList<Integer>();
-		q.add(3);
-		q.add(4);
-		
-		Order testO = new Order(0, "0", 0, "2019/06/01", "2019/06/01", s, d, q);
-		Order test1 = new Order(1, "1", 2, "2019/06/02", "2019/06/02", s, d, q);
-		Order test2 = new Order(2, "1", 2, "2019/06/03", "2019/06/03", s, d, q);
-		insertOrder(testO);
-		insertOrder(test1);
-		insertOrder(test2);
-		
-		Order[] ret = getOrderByHotelID(2);
-		System.out.println(ret[0].getCheckInDate());
-		System.out.println(ret[1].getCheckInDate());
-		try {
-			if (connect != null)
-				connect.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 }

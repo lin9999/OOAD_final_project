@@ -9,10 +9,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -21,140 +21,148 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 public class SearchUI extends JPanel{
-	final private int entersearchWidth = 600, entersearchlistHeight = 300;
-	final private Dimension entersearchCenter = new Dimension(Menu.frameWidth / 2, Menu.frameHeight / 2);
+	private static final long serialVersionUID = 1L;
+	
+	private String checkInDate, checkOutDate;
+	private int people, rooms;
+	
+	final private int searchWidth = 600, searchHeight = 300;
+	final private Dimension searchCenter = new Dimension(HotelPreference.frameWidth / 2, HotelPreference.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
 	private JPanel search = new JPanel();
-	private JTextField entercheckindateField = new JTextField(10);
-	private JTextField entercheckoutdateField = new JTextField(10);
-	private JTextField enterpeopleField = new JTextField(10);
-	private JTextField enterroomField = new JTextField(10);
 
 	private void initPanel() {
 		setLayout(new GridLayout(1, 1));
 		setOpaque(false);
-		setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
+		setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
 	}
 	
 	private void initLayerPane() {
-		layeredPane.setPreferredSize(new Dimension(Menu.frameWidth, Menu.frameHeight));
-		Menu.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
-		Menu.background.setBounds(0, 0, Menu.frameWidth, Menu.frameHeight);
-		layeredPane.add(Menu.background, new Integer(0));
+		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
+		layeredPane.add(HotelPreference.background, new Integer(0));
 		layeredPane.add(search, new Integer(1));
 		add(layeredPane);
 	}
 	
-	private void initEnterSearch() {
-		search.setBounds(entersearchCenter.width - (entersearchWidth / 2),
-				entersearchCenter.height - (entersearchlistHeight / 2), entersearchWidth, entersearchlistHeight);
-		search.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
-		search.setLayout(new GridLayout(5, 1));
-		search.setOpaque(false);
-		// ----------------------------------------------------------
+	private void initSearch() {
 		// check in date panel
-		JPanel checkinPanel = new JPanel();
-		checkinPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		checkinPanel.setOpaque(false);
-		checkinPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel checkin = new JLabel("  CHECK IN DATE: ");
-		checkin.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		// setting check in yyyy/mm/dd
-		entercheckindateField.setHorizontalAlignment(SwingConstants.CENTER);
-		entercheckindateField.setEditable(false);
-		entercheckindateField.setFont(new Font("Serif", Font.BOLD, 23));
-		entercheckindateField.setBackground(new Color(255, 255, 255));
-		entercheckindateField.setText("SELECT A DATE");
-		entercheckindateField.setOpaque(true);
-		entercheckindateField.setBounds(267, 15, 105, 40);
-		entercheckindateField.setColumns(10);
-		entercheckindateField.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				DatePopup DP = new DatePopup(entercheckindateField);
-				DP.showDialog();
-			}
-		});
-		// check in panel adding
-		checkinPanel.add(checkin);
-		checkinPanel.add(entercheckindateField);
-		// ----------------------------------------------------------
+		JPanel checkInPanel = new JPanel();
+		
+		checkInPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		checkInPanel.setOpaque(false);
+		checkInPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
+		
+		// enter check in date
+		JLabel checkIn = new JLabel("  CHECK IN DATE: ");
+		JTextField inputCheckInDate = new JTextField(10);
+
+		checkIn.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputCheckInDate.setHorizontalAlignment(SwingConstants.CENTER);
+		inputCheckInDate.setEditable(false);
+		inputCheckInDate.setFont(new Font("Serif", Font.BOLD, 23));
+		inputCheckInDate.setBackground(new Color(255, 255, 255));
+		inputCheckInDate.setOpaque(true);
+		inputCheckInDate.setBounds(267, 15, 105, 40);
+		inputCheckInDate.setColumns(10);
+		inputCheckInDate.setText((checkInDate == "") ? "SELECT A DATE" : checkInDate);
+		inputCheckInDate.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					DatePopup dp = new DatePopup(inputCheckInDate);
+					dp.showDialog();
+				}
+			});
+		checkInPanel.add(checkIn);
+		checkInPanel.add(inputCheckInDate);
+		
 		// check out date panel
 		JPanel checkoutPanel = new JPanel();
+		
 		checkoutPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		checkoutPanel.setOpaque(false);
 		checkoutPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel checkout = new JLabel("  CHECK OUT DATE: ");
-		checkout.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		// setting check in yyyy/mm/dd
-		entercheckoutdateField.setHorizontalAlignment(SwingConstants.CENTER);
-		entercheckoutdateField.setEditable(false);
-		entercheckoutdateField.setFont(new Font("Serif", Font.BOLD, 23));
-		entercheckoutdateField.setBackground(new Color(255, 255, 255));
-		entercheckoutdateField.setText("SELECT A DATE");
-		entercheckoutdateField.setOpaque(true);
-		entercheckoutdateField.setBounds(267, 15, 105, 40);
-		entercheckoutdateField.setColumns(10);
-		entercheckoutdateField.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				DatePopup DP = new DatePopup(entercheckoutdateField);
-				DP.showDialog();
-			}
-		});
-		// check out panel adding
-		checkoutPanel.add(checkout);
-		checkoutPanel.add(entercheckoutdateField);
-		// ----------------------------------------------------------
+		
+		JLabel checkOut = new JLabel("  CHECK OUT DATE: ");
+		JTextField inputCheckOutDate = new JTextField(10);
+		checkOut.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputCheckOutDate.setHorizontalAlignment(SwingConstants.CENTER);
+		inputCheckOutDate.setEditable(false);
+		inputCheckOutDate.setFont(new Font("Serif", Font.BOLD, 23));
+		inputCheckOutDate.setBackground(new Color(255, 255, 255));
+		inputCheckOutDate.setOpaque(true);
+		inputCheckOutDate.setBounds(267, 15, 105, 40);
+		inputCheckOutDate.setColumns(10);
+		inputCheckOutDate.setText((checkOutDate == "") ? "SELECT A DATE" : checkOutDate);
+		inputCheckOutDate.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					DatePopup DP = new DatePopup(inputCheckOutDate);
+					DP.showDialog();
+				}
+			});
+		checkoutPanel.add(checkOut);
+		checkoutPanel.add(inputCheckOutDate);
+
 		// people panel
 		JPanel peoplePanel = new JPanel();
+		
 		peoplePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		peoplePanel.setOpaque(false);
 		peoplePanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel people = new JLabel("NUMBER OF PEOPLE: ");
-		people.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		enterpeopleField.setHorizontalAlignment(SwingConstants.CENTER);
-		enterpeopleField.setEditable(true);
-		enterpeopleField.setFont(new Font("Serif", Font.BOLD, 23));
-		enterpeopleField.addKeyListener(new KeyAdapter() {// can only enter number!
-			public void keyTyped(KeyEvent e) {
-				char keyChar = e.getKeyChar();
-				if (!(keyChar >= '0' && keyChar <= '9')) {
-					e.consume();
+		
+		JLabel peopleLabel = new JLabel("NUMBER OF PEOPLE: ");
+		JTextField inputPeople = new JTextField(10);
+		peopleLabel.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputPeople.setHorizontalAlignment(SwingConstants.CENTER);
+		inputPeople.setEditable(true);
+		inputPeople.setFont(new Font("Serif", Font.BOLD, 23));
+		inputPeople.setText(new Integer(people).toString());
+		inputPeople.addKeyListener(new KeyAdapter() {// can only enter number!
+				public void keyTyped(KeyEvent e) {
+					char keyChar = e.getKeyChar();
+					if (!(keyChar >= '0' && keyChar <= '9')) {
+						e.consume();
+					}
 				}
-			}
-		});
-		// people panel adding
-		peoplePanel.add(people);
-		peoplePanel.add(enterpeopleField);
-		// ----------------------------------------------------------
+			});
+		peoplePanel.add(peopleLabel);
+		peoplePanel.add(inputPeople);
+
 		// room panel
 		JPanel roomPanel = new JPanel();
+		
 		roomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		roomPanel.setOpaque(false);
 		roomPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel room = new JLabel("NUMBER OF ROOMS: ");
-		room.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		enterroomField.setHorizontalAlignment(SwingConstants.CENTER);
-		enterroomField.setEditable(true);
-		enterroomField.setFont(new Font("Serif", Font.BOLD, 23));
-		enterroomField.addKeyListener(new KeyAdapter() {// can only enter number!
-			public void keyTyped(KeyEvent e) {
-				char keyChar = e.getKeyChar();
-				if (!(keyChar >= '0' && keyChar <= '9')) {
-					e.consume();
+		
+		JLabel roomLabel = new JLabel("NUMBER OF ROOMS: ");
+		JTextField inputRoom = new JTextField(10);
+		
+		roomLabel.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		inputRoom.setHorizontalAlignment(SwingConstants.CENTER);
+		inputRoom.setEditable(true);
+		inputRoom.setFont(new Font("Serif", Font.BOLD, 23));
+		inputRoom.setText(new Integer(rooms).toString());
+		inputRoom.addKeyListener(new KeyAdapter() {// can only enter number!
+				public void keyTyped(KeyEvent e) {
+					char keyChar = e.getKeyChar();
+					if (!(keyChar >= '0' && keyChar <= '9')) {
+						e.consume();
+					}
 				}
-			}
-		});
-		// room panel adding
-		roomPanel.add(room);
-		roomPanel.add(enterroomField);
-		// ----------------------------------------------------------
+			});
+		roomPanel.add(roomLabel);
+		roomPanel.add(inputRoom);
+
 		// set 'back' and 'next' button
 		JPanel buttons = new JPanel();
+		JLabel backText = new JLabel("BACK", JLabel.CENTER);
+		JLabel nextText = new JLabel("NEXT", JLabel.CENTER);
+		
 		buttons.setLayout(new GridLayout(1, 2));
 		buttons.setOpaque(false);
 		buttons.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel backText = new JLabel("BACK", JLabel.CENTER);
 		backText.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		nextText.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		
 		backText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 					SearchUI.this.setVisible(false);
@@ -162,40 +170,40 @@ public class SearchUI extends JPanel{
 					root.setContentPane(new HotelfunctionUI());
 					backText.setForeground(Color.BLACK);
 				}
-			}
-		);
-		JLabel nextentersearch = new JLabel("NEXT", JLabel.CENTER);
-		nextentersearch.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		nextentersearch.addMouseListener( new RBListener() {
+			});
+		nextText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					String s1 = entercheckindateField.getText();
-					String s2 = entercheckoutdateField.getText();
-					if (main.CountDaysBetween(s1, s2) > 0) {
-						String CID = entercheckindateField.getText();
-						String COD = entercheckoutdateField.getText();
-						int People = Integer.parseInt(enterpeopleField.getText());
-						int Rooms = Integer.parseInt(enterroomField.getText());
-						ArrayList<AvailableHotelRoom> AHR = main.SearchAvailableHotels(CID, COD, People, Rooms);
+					String CID = inputCheckInDate.getText();
+					String COD = inputCheckOutDate.getText();
+
+					JFrame root = (JFrame) SwingUtilities.getRoot(SearchUI.this);
+					if (RoomChecker.CountDaysBetween(CID, COD) > 0) {
+						int People = Integer.parseInt(inputPeople.getText());
+						int Rooms = Integer.parseInt(inputRoom.getText());
+						ArrayList<AvailableHotelRoom> AHR = Search.SearchAvailableHotels(CID, COD, People, Rooms);
+						
 						if (AHR.size() > 0) { // if find available hotel
 							SearchUI.this.setVisible(false);
-							JFrame root = (JFrame) SwingUtilities.getRoot(SearchUI.this);
 							root.setContentPane(new HotellistUI(CID, COD, People, Rooms, AHR));
+						} else {
+							JOptionPane.showMessageDialog(root, "NO MATCHED HOTEL", "Warning", JOptionPane.ERROR_MESSAGE);
 						}
-						else {  // TODO no matched hotel
-							// show error message
-						}
-					} else  { // TODO Invalid date (date format error)
-						// show error message
+					} else {
+						JOptionPane.showMessageDialog(root, "INVALID DATE", "Warning", JOptionPane.ERROR_MESSAGE);
 					}
-					nextentersearch.setForeground(Color.BLACK);
+					nextText.setForeground(Color.BLACK);
 				}
 			}
 		);
 		buttons.add(backText);
-		buttons.add(nextentersearch);
-		// ----------------------------------------------------------
-		// EnterHotellist adding
-		search.add(checkinPanel);
+		buttons.add(nextText);
+
+		search.setBounds(searchCenter.width - (searchWidth / 2),
+				searchCenter.height - (searchHeight / 2), searchWidth, searchHeight);
+		search.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
+		search.setLayout(new GridLayout(5, 1));
+		search.setOpaque(false);
+		search.add(checkInPanel);
 		search.add(checkoutPanel);
 		search.add(peoplePanel);
 		search.add(roomPanel);
@@ -203,22 +211,24 @@ public class SearchUI extends JPanel{
 	}
 	
 	public SearchUI() {
-		initEnterSearch();
-		initLayerPane();
+		checkInDate = "";
+		checkOutDate = "";
+		people = 0;
+		rooms = 0;
 		initPanel();
+		initSearch();
+		initLayerPane();
 	}
 	
 
 	public SearchUI(String cid, String cod, int _people, int _rooms) {
-		initEnterSearch();
-		initLayerPane();
+		checkInDate = cid;
+		checkOutDate = cod;
+		people = _people;
+		rooms = _rooms;
 		initPanel();
-		Integer people = new Integer(_people);
-		Integer rooms = new Integer(_rooms);
-		entercheckindateField.setText(cid);
-		entercheckoutdateField.setText(cod);
-		enterpeopleField.setText(people.toString());
-		enterroomField.setText(rooms.toString());
+		initSearch();
+		initLayerPane();
 	}
 	
 }

@@ -14,19 +14,20 @@ public class Search {
 	 * @param n is the demand number of rooms
 	 * @return ArrayList the list of the available hotel rooms
 	 */
-	public static ArrayList<AvailableHotelRoom> SearchAvailableHotels(Hotel[] HotelList, String CID, String COD, int p, int n) {
+	public static ArrayList<AvailableHotelRoom> SearchAvailableHotels(String CID, String COD, int p, int n) {
 		ArrayList<AvailableHotelRoom> AHR = new ArrayList<AvailableHotelRoom>();
-
+		Hotel[] HotelList = BookingSystem.getHotelList();
+		
 		Date Now = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		long start = RoomChecker.CountDaysBetween(sdf.format(Now), CID);
 		long end = RoomChecker.CountDaysBetween(sdf.format(Now), COD);
-
+		
 		for (Hotel hotel : HotelList) {
 			Room[] singleroom = hotel.getSingleRooms();
 			Room[] doubleroom = hotel.getDoubleRooms();
 			Room[] quadroom = hotel.getQuadRooms();
-
+			
 			int available_sr = 0;
 			if (singleroom != null) 
 				for (Room sr : singleroom)
@@ -79,7 +80,9 @@ public class Search {
 	 * @param x is the given room
 	 * @return int the summation price 
 	 */
-	public static int CountSumPrice(Hotel[] HotelList, AvailableHotelRoom x) {
+	public static int CountSumPrice(AvailableHotelRoom x) {
+		Hotel[] HotelList = BookingSystem.getHotelList();
+
 		return HotelList[x.getHotelID()].getSingleRoomPrice() * x.getSingle() 
 			 + HotelList[x.getHotelID()].getDoubleRoomPrice() * x.getDouble()
 		     + HotelList[x.getHotelID()].getQuadRoomPrice() * x.getQuad();
@@ -96,7 +99,7 @@ public class Search {
 	public static ArrayList<AvailableHotelRoom> SortByPrice(ArrayList<AvailableHotelRoom> AHR, int op) {
 		Collections.sort(AHR, new Comparator<AvailableHotelRoom>() {
 			public int compare(AvailableHotelRoom a, AvailableHotelRoom b) {
-				return (op == 1 ? (CountSumPrice(BookingSystem.getHotelList(), a) - CountSumPrice(BookingSystem.getHotelList(), b)) : (CountSumPrice(BookingSystem.getHotelList(), b) - CountSumPrice(BookingSystem.getHotelList(),a)));
+				return (op == 1 ? (CountSumPrice(a) - CountSumPrice(b)) : (CountSumPrice(b) - CountSumPrice(a)));
 			}
 		});
 		return AHR;

@@ -15,7 +15,7 @@ public class Reserve {
 	 * @param qn is the demand number of quad room
 	 * @return ArrayList the list of the reserved room numbers
 	 */
-	public static ArrayList<ArrayList<Integer>> Reserve(int HotelID, String UserID, long start, long end, int sn, int dn, int qn) {
+	public static ArrayList<ArrayList<Integer>> ReserveRoom(int HotelID, String UserID, long start, long end, int sn, int dn, int qn) {
 		Hotel hotel = BookingSystem.getHotelList()[HotelID];
 		Room[] singleroom = hotel.getSingleRooms();
 		Room[] doubleroom = hotel.getDoubleRooms();
@@ -86,7 +86,7 @@ public class Reserve {
 		long end = RoomChecker.CountDaysBetween(sdf.format(Now), COD);
 
 		if (RoomChecker.CheckAllRooms(HotelID, start, end, sn, dn, qn)) {
-			ArrayList<ArrayList<Integer>> re = Reserve.Reserve(HotelID, user.getUserID(), start, end, sn, dn, qn);
+			ArrayList<ArrayList<Integer>> re = Reserve.ReserveRoom(HotelID, user.getUserID(), start, end, sn, dn, qn);
 			Order nOrder = new Order(databaseUtil.getNewOrderID(), user.getUserID(), HotelID, CID, COD, re.get(0), re.get(1), re.get(2));
 			databaseUtil.insertOrder(nOrder);
 			return nOrder;

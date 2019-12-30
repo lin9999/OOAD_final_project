@@ -8,11 +8,11 @@ import javax.swing.text.DocumentFilter;
 
 public class RegistrationUI extends JPanel {
 	private static final long serialVersionUID = 1L;
-	final private int subMenuWidth = 600, subMenuHeight = 270;
-	final private Dimension subMenuCenter = new Dimension(Menu.frameWidth / 2, 450);
+	final private int subHotelPreferenceWidth = 600, subHotelPreferenceHeight = 270;
+	final private Dimension subHotelPreferenceCenter = new Dimension(HotelPreference.frameWidth / 2, 450);
 	private JLayeredPane layeredPane = new JLayeredPane();
 	
-	private JPanel subMenu = new JPanel();
+	private JPanel subHotelPreference = new JPanel();
 	private JPanel signIn = new JPanel();
 	private JPanel signUp = new JPanel();
 	
@@ -24,14 +24,13 @@ public class RegistrationUI extends JPanel {
 	
 	private void initLayerPane() {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
-		Menu.background.setIcon(new ImageIcon("images/Menu/background.png"));
-		Menu.background.setBounds(0, 0, HotelPreference.frameWidth, HotelPreference.frameHeight);
+		HotelPreference.background.setIcon(new ImageIcon("images/HotelPreference/background.png"));
 		layeredPane.add(HotelPreference.background, new Integer(0));
-		layeredPane.add(subMenu, new Integer(1));
+		layeredPane.add(subHotelPreference, new Integer(1));
 		add(layeredPane);
 	}
 	
-	private void initSubMenu() {		
+	private void initSubHotelPreference() {		
 		JPanel buttonPanelet = new JPanel();
 		JLabel signInText = new JLabel("SIGN IN", JLabel.CENTER);
 		JLabel signUpText = new JLabel("SIGN UP", JLabel.CENTER);
@@ -39,7 +38,7 @@ public class RegistrationUI extends JPanel {
 		signUpText.setFont(new Font("Arial Black", Font.BOLD, 30));	
 		signInText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					layeredPane.remove(subMenu);
+					layeredPane.remove(subHotelPreference);
 					layeredPane.add(signIn, new Integer(1));
 					validate();
 					repaint();
@@ -48,7 +47,7 @@ public class RegistrationUI extends JPanel {
 			});
 		signUpText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					layeredPane.remove(subMenu);
+					layeredPane.remove(subHotelPreference);
 					layeredPane.add(signUp, new Integer(1));
 					validate();
 					repaint();
@@ -63,15 +62,15 @@ public class RegistrationUI extends JPanel {
 		JPanel blank = new JPanel();
 		blank.setOpaque(false);
 		
-		subMenu.setBounds(subMenuCenter.width - (subMenuWidth / 2), subMenuCenter.height - (subMenuHeight / 2),
-				subMenuWidth, subMenuHeight);
-		subMenu.setLayout(new GridLayout(4, 1, 0, 0));
-		subMenu.setOpaque(false);
-		subMenu.setBackground(null);
-		subMenu.add(blank);
-		subMenu.add(blank);
-		subMenu.add(blank);
-		subMenu.add(buttonPanelet);
+		subHotelPreference.setBounds(subHotelPreferenceCenter.width - (subHotelPreferenceWidth / 2), subHotelPreferenceCenter.height - (subHotelPreferenceHeight / 2),
+				subHotelPreferenceWidth, subHotelPreferenceHeight);
+		subHotelPreference.setLayout(new GridLayout(4, 1, 0, 0));
+		subHotelPreference.setOpaque(false);
+		subHotelPreference.setBackground(null);
+		subHotelPreference.add(blank);
+		subHotelPreference.add(blank);
+		subHotelPreference.add(blank);
+		subHotelPreference.add(buttonPanelet);
 	}
 	
 	private void initSignIn() { 
@@ -194,7 +193,7 @@ public class RegistrationUI extends JPanel {
 					int ret = Registration.SignInCheck(inputID.getText(), new String(inputPassword.getPassword()));
 					JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
 					if (ret == 1) {
-						main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
+						BookingSystem.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 						RegistrationUI.this.setVisible(false);
 						root.setContentPane(new HotelfunctionUI());
 					} else if (ret == 0) {
@@ -209,7 +208,7 @@ public class RegistrationUI extends JPanel {
 		backText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 					layeredPane.remove(signIn);
-					layeredPane.add(subMenu);
+					layeredPane.add(subHotelPreference);
 					validate();
 					repaint();
 					backText.setForeground(Color.BLACK);
@@ -220,8 +219,8 @@ public class RegistrationUI extends JPanel {
 		buttonPanel.add(loginText);
 
 		// sign in adding
-		signIn.setBounds(subMenuCenter.width - (subMenuWidth / 2), subMenuCenter.height - (subMenuHeight / 2), 
-				subMenuWidth, subMenuHeight);
+		signIn.setBounds(subHotelPreferenceCenter.width - (subHotelPreferenceWidth / 2), subHotelPreferenceCenter.height - (subHotelPreferenceHeight / 2), 
+				subHotelPreferenceWidth, subHotelPreferenceHeight);
 		signIn.setLayout(new GridLayout(3, 1, 0, 0));
 		signIn.setOpaque(false);
 		signIn.add(IDPanel);
@@ -377,8 +376,8 @@ public class RegistrationUI extends JPanel {
 						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
 						if (Registration.SignUpCheck(inputID.getText())) {
 							if (inputCode.getText().equals(verifyCode.getText())) {
-								main.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
-								databaseUtil.insertUser(main.user);
+								BookingSystem.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
+								databaseUtil.insertUser(BookingSystem.user);
 								RegistrationUI.this.setVisible(false);
 								root.setContentPane(new HotelfunctionUI());								
 							} else {
@@ -397,7 +396,7 @@ public class RegistrationUI extends JPanel {
 		cancelText.addMouseListener(new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						layeredPane.remove(signUp);
-						layeredPane.add(subMenu, new Integer(1));
+						layeredPane.add(subHotelPreference, new Integer(1));
 						inputID.setText(null);
 						inputPassword.setText(null);
 						inputCode.setText(null);
@@ -412,8 +411,8 @@ public class RegistrationUI extends JPanel {
 		buttons.add(loginText);
 
 		// sign up adding
-		signUp.setBounds(subMenuCenter.width - (subMenuWidth / 2), subMenuCenter.height - (subMenuHeight / 2),
-				subMenuWidth, subMenuHeight);
+		signUp.setBounds(subHotelPreferenceCenter.width - (subHotelPreferenceWidth / 2), subHotelPreferenceCenter.height - (subHotelPreferenceHeight / 2),
+				subHotelPreferenceWidth, subHotelPreferenceHeight);
 		signUp.add(IDPanel);
 		signUp.add(passwordPanel);
 		signUp.add(verifycodePanel);
@@ -421,7 +420,7 @@ public class RegistrationUI extends JPanel {
 	}
 	
 	public RegistrationUI() {
-		initSubMenu();
+		initSubHotelPreference();
 		initSignIn();
 		initsignUp();
 		initLayerPane();

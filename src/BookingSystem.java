@@ -12,7 +12,7 @@ import com.google.gson.GsonBuilder;
  */
 public class BookingSystem {
 	private static Hotel[] HotelList;
-	private User[] UserList;
+	public static User user;
 	
 	public static Hotel[] getHotelList() {
 		return HotelList;
@@ -22,13 +22,13 @@ public class BookingSystem {
 	 * This method reads the hotel list.
 	 */
 	public static void ReadHotelList()  {
-		try (Reader reader = new InputStreamReader(main.class.getResourceAsStream("HotelList.json"), "big5")) {
+		try (Reader reader = new InputStreamReader(BookingSystem.class.getResourceAsStream("HotelList.json"), "big5")) {
 			Gson gson = new GsonBuilder().create();
 			HotelList = gson.fromJson(reader, Hotel[].class);
 			for (Hotel h : HotelList)
 				h.init();
-			for (Hotel h : HotelList)
-				System.out.println(h);
+//			for (Hotel h : HotelList)
+//				System.out.println(h);
 		} catch (Exception e) {
 			System.out.println("cannot find the file.");
 		}

@@ -54,47 +54,38 @@ public class HotelfunctionUI extends JPanel {
 		JLabel reserveText = new JLabel("RESERVE", JLabel.CENTER);
 		reserveText.setFont(new Font("Dialog", Font.BOLD, 36));
 		reserveText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						HotelfunctionUI.this.setVisible(false);
-						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-		//				 TODO 
-						root.setContentPane(new ReserveUI());
-						reserveText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					HotelfunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					root.setContentPane(new ReserveUI());
+					reserveText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		
 		// go to InquiryUI
 		JLabel inquiryText = new JLabel("INQUIRY", JLabel.CENTER);
 		inquiryText.setFont(new Font("Dialog", Font.BOLD, 36));
 		inquiryText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						layeredPane.remove(hotelfunction);
-						HotelfunctionUI.this.setVisible(false);
-						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-						root.setContentPane(new InquiryUI());
-						validate();
-						repaint();
-						inquiryText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					HotelfunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					root.setContentPane(new InquiryUI());
+					inquiryText.setForeground(Color.BLACK);
 				}
-			);
+			});
+
 		
 		// go to RegistrationUI
 		JLabel logoutText = new JLabel("LOGOUT", JLabel.CENTER);
 		logoutText.setFont(new Font("Dialog", Font.BOLD, 36));
 		logoutText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						layeredPane.remove(hotelfunction);
-						HotelfunctionUI.this.setVisible(false);
-						JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
-						root.setContentPane(new RegistrationUI());
-						validate();
-						repaint();
-						logoutText.setForeground(Color.BLACK);
-					}
+				public void mouseClicked(MouseEvent e) {
+					HotelfunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					root.setContentPane(new RegistrationUI());
+					logoutText.setForeground(Color.BLACK);
 				}
-			);
+			});
 		
 		hotelfunction.setLayout(new GridLayout(2, 2, 0, 0));
 		hotelfunction.setOpaque(false);

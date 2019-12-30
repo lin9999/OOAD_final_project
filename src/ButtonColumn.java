@@ -11,6 +11,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, TableCellEditor, ActionListener {
+	private static final long serialVersionUID = 1L;
+	
 	JTable table;
 	JButton renderButton;
 	JButton editButton;
@@ -58,13 +60,9 @@ class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, Tabl
 
 	public void actionPerformed(ActionEvent e) {
 		fireEditingStopped();
-		Object hid = table.getModel().getValueAt(table.getSelectedRow(), 0);
-		Object sroom = table.getModel().getValueAt(table.getSelectedRow(), 4);
-		Object droom = table.getModel().getValueAt(table.getSelectedRow(), 5);
-		Object qroom = table.getModel().getValueAt(table.getSelectedRow(), 6);
-		Menu.reservehotelid.setSelectedIndex((int) hid);
-		Menu.reservesingleroomField.setText(sroom.toString());
-		Menu.reservedoubleroomField.setText(droom.toString());
-		Menu.reservequadroomField.setText(qroom.toString());
+		HotellistUI.setHotelID((int)table.getModel().getValueAt(table.getSelectedRow(), 0));
+		HotellistUI.setSRoom((int)table.getModel().getValueAt(table.getSelectedRow(), 4));
+		HotellistUI.setDRoom((int)table.getModel().getValueAt(table.getSelectedRow(), 5));
+		HotellistUI.setQRoom((int)table.getModel().getValueAt(table.getSelectedRow(), 6));
 	}
 }
