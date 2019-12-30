@@ -167,7 +167,7 @@ public class SearchUI extends JPanel{
 				public void mouseClicked(MouseEvent e) {
 					SearchUI.this.setVisible(false);
 					JFrame root = (JFrame) SwingUtilities.getRoot(SearchUI.this);
-					root.setContentPane(new HotelfunctionUI());
+					root.setContentPane(new HotelFunctionUI());
 					backText.setForeground(Color.BLACK);
 				}
 			});

@@ -12,13 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 
-public class HotelfunctionUI extends JPanel {
+public class HotelFunctionUI extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	final private int hotelFunctionWidth = 500, hotelFunctionHeight = 200;
-	final private Dimension hotelFunctionCenter = new Dimension(HotelPreference.frameWidth / 2, HotelPreference.frameHeight / 2);
+	final private int HotelFunctionWidth = 500, HotelFunctionHeight = 200;
+	final private Dimension HotelFunctionCenter = new Dimension(HotelPreference.frameWidth / 2, HotelPreference.frameHeight / 2);
 	private JLayeredPane layeredPane = new JLayeredPane();
-	private JPanel hotelfunction = new JPanel();
+	private JPanel HotelFunction = new JPanel();
 	
 	private void initPanel() {
 		setLayout(new GridLayout(1, 1));
@@ -30,21 +30,21 @@ public class HotelfunctionUI extends JPanel {
 		layeredPane.setPreferredSize(new Dimension(HotelPreference.frameWidth, HotelPreference.frameHeight));
 		HotelPreference.background.setIcon(new ImageIcon("images/Menu/hotelbackground.jpg"));
 		layeredPane.add(HotelPreference.background, new Integer(0));
-		layeredPane.add(hotelfunction, new Integer(1));
+		layeredPane.add(HotelFunction, new Integer(1));
 		add(layeredPane);
 	}
 	
-	private void initHotelfunction() {
-		hotelfunction.setBounds(hotelFunctionCenter.width - (hotelFunctionWidth / 2),
-				hotelFunctionCenter.height - (hotelFunctionHeight / 2), hotelFunctionWidth, hotelFunctionHeight);
+	private void initHotelFunction() {
+		HotelFunction.setBounds(HotelFunctionCenter.width - (HotelFunctionWidth / 2),
+				HotelFunctionCenter.height - (HotelFunctionHeight / 2), HotelFunctionWidth, HotelFunctionHeight);
 		
 		// go to SearchUI
 		JLabel searchText = new JLabel("SEARCH", JLabel.CENTER);
 		searchText.setFont(new Font("Dialog", Font.BOLD, 36));
 		searchText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					HotelfunctionUI.this.setVisible(false);
-					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					HotelFunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelFunctionUI.this);
 					root.setContentPane(new SearchUI());
 					searchText.setForeground(Color.BLACK);
 				}
@@ -55,8 +55,8 @@ public class HotelfunctionUI extends JPanel {
 		reserveText.setFont(new Font("Dialog", Font.BOLD, 36));
 		reserveText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					HotelfunctionUI.this.setVisible(false);
-					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					HotelFunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelFunctionUI.this);
 					root.setContentPane(new ReserveUI());
 					reserveText.setForeground(Color.BLACK);
 				}
@@ -67,8 +67,8 @@ public class HotelfunctionUI extends JPanel {
 		inquiryText.setFont(new Font("Dialog", Font.BOLD, 36));
 		inquiryText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					HotelfunctionUI.this.setVisible(false);
-					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					HotelFunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelFunctionUI.this);
 					root.setContentPane(new InquiryUI());
 					inquiryText.setForeground(Color.BLACK);
 				}
@@ -80,24 +80,24 @@ public class HotelfunctionUI extends JPanel {
 		logoutText.setFont(new Font("Dialog", Font.BOLD, 36));
 		logoutText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
-					HotelfunctionUI.this.setVisible(false);
-					JFrame root = (JFrame) SwingUtilities.getRoot(HotelfunctionUI.this);
+					HotelFunctionUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(HotelFunctionUI.this);
 					root.setContentPane(new RegistrationUI());
 					logoutText.setForeground(Color.BLACK);
 				}
 			});
 		
-		hotelfunction.setLayout(new GridLayout(2, 2, 0, 0));
-		hotelfunction.setOpaque(false);
-		hotelfunction.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
-		hotelfunction.add(searchText);
-		hotelfunction.add(reserveText);
-		hotelfunction.add(inquiryText);
-		hotelfunction.add(logoutText);
+		HotelFunction.setLayout(new GridLayout(2, 2, 0, 0));
+		HotelFunction.setOpaque(false);
+		HotelFunction.setBorder(new MatteBorder(5, 5, 5, 5, Color.white));
+		HotelFunction.add(searchText);
+		HotelFunction.add(reserveText);
+		HotelFunction.add(inquiryText);
+		HotelFunction.add(logoutText);
 	}
 	
-	public HotelfunctionUI() {
-		initHotelfunction();
+	public HotelFunctionUI() {
+		initHotelFunction();
 		initLayerPane();
 		initPanel();
 	}

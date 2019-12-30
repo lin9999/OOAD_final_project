@@ -79,7 +79,7 @@ public class InquiryUI extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					InquiryUI.this.setVisible(false);
 					JFrame root = (JFrame) SwingUtilities.getRoot(InquiryUI.this);
-					root.setContentPane(new HotelfunctionUI());
+					root.setContentPane(new HotelFunctionUI());
 					backText.setForeground(Color.BLACK);
 				}
 			}
@@ -95,7 +95,7 @@ public class InquiryUI extends JPanel {
 						root.setContentPane(new ShowOrderUI(order));
 					} else {// 不存在此訂單代號
 						// show error message
-						JOptionPane.showMessageDialog(root, "WRONG RESERVATION NUMBER!", "Warning", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(root, "NO SUCH RESERVATION!", "Warning", JOptionPane.ERROR_MESSAGE);
 					}
 					nextText.setForeground(Color.BLACK);
 				}

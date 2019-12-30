@@ -195,7 +195,7 @@ public class RegistrationUI extends JPanel {
 					if (ret == 1) {
 						BookingSystem.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 						RegistrationUI.this.setVisible(false);
-						root.setContentPane(new HotelfunctionUI());
+						root.setContentPane(new HotelFunctionUI());
 					} else if (ret == 0) {
 						JOptionPane.showMessageDialog(root, "UNKNOWN ID", "Warning", JOptionPane.ERROR_MESSAGE);
 					} else {
@@ -379,7 +379,7 @@ public class RegistrationUI extends JPanel {
 								BookingSystem.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 								databaseUtil.insertUser(BookingSystem.user);
 								RegistrationUI.this.setVisible(false);
-								root.setContentPane(new HotelfunctionUI());								
+								root.setContentPane(new HotelFunctionUI());								
 							} else {
 								JOptionPane.showMessageDialog(root, "WRONG VERIFY CODE", "Warning", JOptionPane.ERROR_MESSAGE);
 								verifyCode.setText(Registration.getVerifyCode(6));

@@ -217,7 +217,7 @@ public class ReserveUI extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					ReserveUI.this.setVisible(false);
 					JFrame root = (JFrame) SwingUtilities.getRoot(ReserveUI.this);
-					root.setContentPane(new HotelfunctionUI());
+					root.setContentPane(new HotelFunctionUI());
 					cancelText.setForeground(Color.BLACK);
 				}
 			});

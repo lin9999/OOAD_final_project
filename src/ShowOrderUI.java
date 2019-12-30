@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -34,24 +35,31 @@ public class ShowOrderUI extends JPanel{
 				public void mouseClicked(MouseEvent e) {
 					// TODO  cancel the order
 					// show the message YES or NO!
+					JFrame root = (JFrame) SwingUtilities.getRoot(ShowOrderUI.this);
+					int result = JOptionPane.showConfirmDialog(root, "CANCEL THE ORDER?", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (result == JOptionPane.YES_OPTION) {
+						ShowOrderUI.this.setVisible(false);
+						Inquiry.CancelOrder(oid);
+						root.setContentPane(new HotelFunctionUI());
+					}
 					cancelText.setForeground(Color.BLACK);
 				}
 			});
 		JLabel modifyText = new JLabel("MODIFY", JLabel.CENTER);
-			modifyText.addMouseListener( new RBListener() {
-					public void mouseClicked(MouseEvent e) {
-						ShowOrderUI.this.setVisible(false);
-						JFrame root = (JFrame) SwingUtilities.getRoot(ShowOrderUI.this);
-						root.setContentPane(new ModifyUI(order));
-						modifyText.setForeground(Color.BLACK);
-					}
-				});
+		modifyText.addMouseListener( new RBListener() {
+				public void mouseClicked(MouseEvent e) {
+					ShowOrderUI.this.setVisible(false);
+					JFrame root = (JFrame) SwingUtilities.getRoot(ShowOrderUI.this);
+					root.setContentPane(new ModifyUI(order));
+					modifyText.setForeground(Color.BLACK);
+				}
+			});
 		JLabel confirmText = new JLabel("CONFIRM", JLabel.CENTER);
 		confirmText.addMouseListener( new RBListener() {
 				public void mouseClicked(MouseEvent e) {
 					ShowOrderUI.this.setVisible(false);
 					JFrame root = (JFrame) SwingUtilities.getRoot(ShowOrderUI.this);
-					root.setContentPane(new HotelfunctionUI());
+					root.setContentPane(new HotelFunctionUI());
 					confirmText.setForeground(Color.BLACK);
 				}
 			});
