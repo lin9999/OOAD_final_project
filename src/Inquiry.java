@@ -10,7 +10,11 @@ public class Inquiry {
 	 * @return boolean true if the order's ID exists.
 	 */
 	public static Order CheckOrder(int OrderID) {
-		return databaseUtil.getOrderByOrderID(OrderID);
+		Order ret = databaseUtil.getOrderByOrderID(OrderID);
+		System.out.println(ret.getUserID().equals(BookingSystem.user.getUserID()));
+		if (ret.getUserID().equals(BookingSystem.user.getUserID()))
+			return ret;
+		return null;
 	}
 	
 	/**

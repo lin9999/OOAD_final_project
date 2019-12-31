@@ -8,7 +8,7 @@ import javax.swing.text.DocumentFilter;
 
 public class RegistrationUI extends JPanel {
 	private static final long serialVersionUID = 1L;
-	final private int subHotelPreferenceWidth = 600, subHotelPreferenceHeight = 270;
+	final private int subHotelPreferenceWidth = 750, subHotelPreferenceHeight = 270;
 	final private Dimension subHotelPreferenceCenter = new Dimension(HotelPreference.frameWidth / 2, 450);
 	private JLayeredPane layeredPane = new JLayeredPane();
 	
@@ -80,9 +80,9 @@ public class RegistrationUI extends JPanel {
 		IDPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		
 		// enter ID
-		JLabel ID = new JLabel("       ID       : ");
+		JLabel ID = new JLabel(" Email Address : ");
 		ID.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		JTextField inputID = new JTextField(10) {
+		JTextField inputID = new JTextField(15) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -103,7 +103,7 @@ public class RegistrationUI extends JPanel {
 			}
 		};
 		inputID.setEditable(true);
-		inputID.setFont(new Font("Arial Black", Font.BOLD, 23));
+		inputID.setFont(new Font("Arial Black", Font.BOLD, 21));
 		inputID.setBackground(new Color(232, 232, 232, 120));
 		
 		IDPanel.add(ID);
@@ -116,9 +116,9 @@ public class RegistrationUI extends JPanel {
 		passwordPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		
 		// enter password
-		JLabel password = new JLabel("PASSWORD : ");
+		JLabel password = new JLabel("   PASSWORD   : ");
 		password.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		JPasswordField inputPassword = new JPasswordField(10) {
+		JPasswordField inputPassword = new JPasswordField(15) {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
@@ -137,7 +137,7 @@ public class RegistrationUI extends JPanel {
 			}
 		};
 		inputPassword.setEditable(true);
-		inputPassword.setFont(new Font("Arial Black", Font.BOLD, 23));
+		inputPassword.setFont(new Font("Arial Black", Font.BOLD, 21));
 		inputPassword.setBackground(new Color(232, 232, 232, 120));
 		// whether to show the password or not
 		inputPassword.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -237,9 +237,9 @@ public class RegistrationUI extends JPanel {
 		IDPanel.setOpaque(false);
 		IDPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		IDPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
-		JLabel ID = new JLabel("       ID       : ");
+		JLabel ID = new JLabel(" Email Address : ");
 		ID.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		JTextField inputID = new JTextField(10) {
+		JTextField inputID = new JTextField(15) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void paintComponent(Graphics g) {
@@ -260,7 +260,7 @@ public class RegistrationUI extends JPanel {
 			}
 		};
 		inputID.setEditable(true);
-		inputID.setFont(new Font("Arial Black", Font.BOLD, 23));
+		inputID.setFont(new Font("Arial Black", Font.BOLD, 21));
 		inputID.setBackground(new Color(232, 232, 232, 120));
 		
 		IDPanel.add(ID);
@@ -273,9 +273,9 @@ public class RegistrationUI extends JPanel {
 		passwordPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		
 		// enter password
-		JLabel password = new JLabel("PASSWORD : ");
+		JLabel password = new JLabel("   PASSWORD   : ");
 		password.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		JPasswordField inputPassword = new JPasswordField(10) {
+		JPasswordField inputPassword = new JPasswordField(15) {
 			private static final long serialVersionUID = 1L;
 			protected void paintComponent(Graphics g) {
 				if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
@@ -294,7 +294,7 @@ public class RegistrationUI extends JPanel {
 			}
 		};
 		inputPassword.setEditable(true);
-		inputPassword.setFont(new Font("Arial Black", Font.BOLD, 23));
+		inputPassword.setFont(new Font("Arial Black", Font.BOLD, 21));
 		inputPassword.setBackground(new Color(232, 232, 232, 120));
 		// whether to show the password or not
 		inputPassword.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -341,7 +341,7 @@ public class RegistrationUI extends JPanel {
 		verifycodePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		verifycodePanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 		// enter verify code
-		JLabel verifyCodeMessage = new JLabel("VERIFY CODE      : ");
+		JLabel verifyCodeMessage = new JLabel("  VERIFY CODE    : ");
 		verifyCodeMessage.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		inputCode.setEditable(true);
 		inputCode.setFont(new Font("Times New Roman", Font.BOLD, 23));
@@ -374,7 +374,8 @@ public class RegistrationUI extends JPanel {
 		loginText.addMouseListener( new RBListener() {
 					public void mouseClicked(MouseEvent e) {
 						JFrame root = (JFrame) SwingUtilities.getRoot(RegistrationUI.this);
-						if (Registration.SignUpCheck(inputID.getText())) {
+						int ret = Registration.SignUpCheck(inputID.getText());
+						if (ret == 1) {
 							if (inputCode.getText().equals(verifyCode.getText())) {
 								BookingSystem.user = new User(inputID.getText(), new String(inputPassword.getPassword()));
 								databaseUtil.insertUser(BookingSystem.user);
@@ -384,8 +385,11 @@ public class RegistrationUI extends JPanel {
 								JOptionPane.showMessageDialog(root, "WRONG VERIFY CODE", "Warning", JOptionPane.ERROR_MESSAGE);
 								verifyCode.setText(Registration.getVerifyCode(6));
 							}
-						} else {
+						} else if (ret == 0) {
 							JOptionPane.showMessageDialog(root, "USER ID ALREADY EXISTS", "Warning", JOptionPane.ERROR_MESSAGE);							
+							verifyCode.setText(Registration.getVerifyCode(6));
+						} else {
+							JOptionPane.showMessageDialog(root, "INVALID EMAIL ADDRESS", "Warning", JOptionPane.ERROR_MESSAGE);							
 							verifyCode.setText(Registration.getVerifyCode(6));
 						}
 						loginText.setForeground(Color.BLACK);

@@ -1,4 +1,6 @@
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Registration {
 	/**
@@ -32,13 +34,24 @@ public class Registration {
 		return 1;
 	}
 	
+	public static boolean addressIsValid(String addr) {
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(addr);
+
+    	return mat.matches();
+	}
+	
 	/**
 	 * This method checks whether the current user's ID doesn't exist.
 	 * 
 	 * @param UserID the current user's ID
 	 * @return boolean true if user's ID doesn't exist.
 	 */
-	public static boolean SignUpCheck(String UserID) {
-		return databaseUtil.getUser(UserID) == null;
+	public static int SignUpCheck(String UserID) {
+		if (!addressIsValid(UserID))
+			return -1;
+		if (databaseUtil.getUser(UserID) != null)
+			return 0;
+		return 1;
 	}
 }

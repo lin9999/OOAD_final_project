@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -257,6 +259,14 @@ public class ReserveUI extends JPanel {
 						Order order = Reserve.BookHotel(BookingSystem.user, CID, COD, HotelID, sNum, dNum, qNum);
 						if (order != null) {
 							ReserveUI.this.setVisible(false);
+							try {
+								mailSender.SendEmail(order);
+							} catch (AddressException e1) {
+								JOptionPane.showMessageDialog(root, "ADDRESS ERROR!", "Warning", JOptionPane.ERROR_MESSAGE);
+								e1.printStackTrace();
+							} catch (MessagingException e1) {
+								e1.printStackTrace();
+							}
 							root.setContentPane(new ShowOrderUI(order));
 						} else {
 							JOptionPane.showMessageDialog(root, "Sorry, THERE HAS NO VACANT SUITES!", "Warning", JOptionPane.ERROR_MESSAGE);

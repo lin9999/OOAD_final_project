@@ -3,10 +3,11 @@ import java.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.border.*;
-import java.lang.*;
 
 public class DatePopup extends JDialog implements java.awt.event.ActionListener {
-    private JPanel mPanel1 = new JPanel();
+	private static final long serialVersionUID = 1L;
+	
+	private JPanel mPanel1 = new JPanel();
     private JPanel mPanel2 = new JPanel();
     private JPanel mPanel3 = new JPanel();
     private JPanel mPanel4 = new JPanel();
