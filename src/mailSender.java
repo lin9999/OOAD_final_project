@@ -31,15 +31,15 @@ public class mailSender {
 		} catch(Exception AddressException) {
 			return false;
 		}
-		if (_Order.getSnum() != null) {room_num = room_num + ((_Order.getSnum()).toString() + " for Single "); }
-		if (_Order.getDnum() != null) {room_num = room_num + (_Order.getDnum().toString() + " for Double "); }
-		if (_Order.getQnum() != null) {room_num = room_num + (_Order.getQnum().toString() + " for Quad "); }
+		if (_Order.getSnum() != null) {room_num = room_num + ((_Order.getSnum()).toString() + " for Single, "); }
+		if (_Order.getDnum() != null) {room_num = room_num + (_Order.getDnum().toString() + " for Double, "); }
+		if (_Order.getQnum() != null) {room_num = room_num + (_Order.getQnum().toString() + " for Quad, "); }
 		message.setSubject("Hotel booking information");
-		message.setText("Dear gust, \n\nYou've already make a reservation of from OOAD_Hotal.com!\n"
+		message.setText("Dear gust, \n\nYou've already make a reservation from OOAD_Hotal.com!\n\n"
 					  + "Your order ID is: " + _Order.getID() + "\n"
 					  + "You've reserved room " + room_num + "from " +  _Order.getCheckInDate() + " to " + _Order.getCheckOutDate() + "\n"
-					  + "The total price is " + _Order.getSumPrice() + "\n"
-					  + "If you want to check or change your order, please go to our website with your order ID.\nBest Regards,\nOOAD Hotel");
+					  + "The total price is " + _Order.getSumPrice() + " NTD.\n\n"
+					  + "If you want to check or change your order, please go to our website with your order ID.\n\nBest Regards,\nOOAD Hotel");
    
 		Transport transport = session.getTransport("smtp");
 		transport.connect(host, port, username, password);
