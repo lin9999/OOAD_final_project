@@ -11,7 +11,7 @@ public class mailSender {
 		String room_num = "";
 		int port = 587;
 		final String username = "OOAD.Hotel@gmail.com";
-		final String password = "FinalProjectSampleCode";//your password
+		final String password = "FinalProjectSampleCode"; //your password
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", host);
@@ -31,13 +31,33 @@ public class mailSender {
 		} catch(Exception AddressException) {
 			return false;
 		}
-		if (_Order.getSnum() != null) {room_num = room_num + ((_Order.getSnum()).toString() + " for Single, "); }
-		if (_Order.getDnum() != null) {room_num = room_num + (_Order.getDnum().toString() + " for Double, "); }
-		if (_Order.getQnum() != null) {room_num = room_num + (_Order.getQnum().toString() + " for Quad, "); }
+		
+		if (_Order.getSnum() != null && !_Order.getSnum().isEmpty()) {
+			for (int i = 0; i < _Order.getSnum().size(); i++) {
+				room_num += _Order.getSnum().get(i);
+				room_num += (i == _Order.getSnum().size()-1) ? " " : ", ";
+			}
+			room_num += " for Single, "; 
+		}
+		if (_Order.getDnum() != null && !_Order.getDnum().isEmpty()) {
+			for (int i = 0; i < _Order.getDnum().size(); i++) {
+				room_num += _Order.getDnum().get(i);
+				room_num += (i == _Order.getDnum().size()-1) ? " " : ", ";
+			}
+			room_num += " for Double, "; 
+		}
+		if (_Order.getQnum() != null && !_Order.getQnum().isEmpty()) {
+			for (int i = 0; i < _Order.getQnum().size(); i++) {
+				room_num += _Order.getQnum().get(i);
+				room_num += (i == _Order.getQnum().size()-1) ? " " : ", ";
+			}
+			room_num += " for Quad, ";
+		}
+		
 		message.setSubject("Hotel booking information");
-		message.setText("Dear gust, \n\nYou've already make a reservation from OOAD_Hotal.com!\n\n"
+		message.setText("Dear gust, \n\nYou've already made a reservation from OOAD_Hotal.com!\n\n"
 					  + "Your order ID is: " + _Order.getID() + "\n"
-					  + "You've reserved room " + room_num + "from " +  _Order.getCheckInDate() + " to " + _Order.getCheckOutDate() + "\n"
+					  + "You've reserved room " + room_num + " from " +  _Order.getCheckInDate() + " to " + _Order.getCheckOutDate() + "\n"
 					  + "The total price is " + _Order.getSumPrice() + " NTD.\n\n"
 					  + "If you want to check or change your order, please go to our website with your order ID.\n\nBest Regards,\nOOAD Hotel");
    
