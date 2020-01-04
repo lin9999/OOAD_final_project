@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="jar/commons-io-2.6/commons-io-2.6-tests.jar"/>
 	<classpathentry kind="lib" path="jar/commons-io-2.6/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="jar/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="jar/mail.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
